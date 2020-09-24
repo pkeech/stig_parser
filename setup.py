@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='STIG Parser',  
-    version='0.0.1',
+    name='stig_parser',  
+    version='0.0.3',
     author="Peter Keech",
     author_email="peter.a.keech@gmail.com",
     description="A Python module to parse DISA STIG (XCCDF) Files",
@@ -18,5 +18,5 @@ setuptools.setup(
          "License :: OSI Approved :: MIT License",
          "Operating System :: OS Independent",
      ],
-
+    python_requires='>=3.6',
  )
