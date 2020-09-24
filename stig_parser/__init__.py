@@ -4,9 +4,14 @@
 
 ## IMPORT REQUIRED EXTERNAL MODULES
 import os, xmltodict, json
+#from pkg_resources import resource_filename
+
 
 ## FUNCTION: CONVERT RAW XCCDF (XML) TO JSON
 def convert_xccdf(raw):
+    ## CREATE XSD PATH
+    #filepath = resource_filename(__name__, 'xccdf-1.1.4.xsd')
+    
     ## CONVERT XML TO PYTHON DICTIONARY
     content_dict = xmltodict.parse(raw)
 
