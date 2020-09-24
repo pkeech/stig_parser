@@ -31,6 +31,43 @@ json_results = convert_xccdf(raw_file)
 
 ```
 
+## Output
+
+Outlined below is the expected JSON output:
+
+``` json
+{
+    benchmark_date: "xxxxxxx",
+    description: "xxxxxxxx",
+    release: "xx",
+    rules: [
+        {
+            "check": "xxxxxxxx", 
+            "description": "xxxxxxxxxx", 
+            "fixtext": "xxxxxxxxxx", 
+            "id": "xxxxxxx", 
+            "severity": "xxxxxxxx", 
+            "stig_id": "xx-xx-xxxxxx", 
+            "title": "xxxxxxxxxxx"
+        },
+        {
+            "check": "xxxxxxxx", 
+            "description": "xxxxxxxxxx", 
+            "fixtext": "xxxxxxxxxx", 
+            "id": "xxxxxxx", 
+            "severity": "xxxxxxxx", 
+            "stig_id": "xx-xx-xxxxxx", 
+            "title": "xxxxxxxxxxx"
+        }
+    ],
+    title: "xxxxxxxxxx",
+    version: "xxxxxxxxx"
+}
+
+
+```
+
+
 ## Dependencies
 
 The following packages are required for this package:
