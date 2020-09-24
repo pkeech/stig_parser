@@ -63,8 +63,6 @@ Outlined below is the expected JSON output:
     title: "xxxxxxxxxx",
     version: "xxxxxxxxx"
 }
-
-
 ```
 
 
