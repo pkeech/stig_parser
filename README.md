@@ -8,6 +8,13 @@ To install stig-parser, simple run the following command:
 
 `pip install stig-parser`
 
+## Version Updates
+
+| Version | Description |
+| :---: | --- | 
+| 1.0.0 | Initial Creation of `stig-parser` |
+| 1.0.1 | Updated to handle change to STIG schema ([Issue #3](/../../issues/3)) |
+
 ## Documentation
 
 Documentation hasn't been created at this time. For the current development documentation, please visit the [repository](https://github.com/pkeech/stig_parser).
