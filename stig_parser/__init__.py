@@ -11,12 +11,19 @@ import os, xmltodict, json
 def convert_xccdf(raw):
     ## CREATE XSD PATH
     #filepath = resource_filename(__name__, 'xccdf-1.1.4.xsd')
-    
+        
     ## CONVERT XML TO PYTHON DICTIONARY
     content_dict = xmltodict.parse(raw)
 
+    ## HANDLE NEW VS. OLD VERSION OF STIG SCHEMA (ISSUE #3)
+    if isinstance(content_dict['Benchmark']['plain-text'], list):
+        ## NEW VERSION
+        raw_version = content_dict['Benchmark']['plain-text'][0]['#text']
+    else:
+        ## OLD VERSION
+        raw_version = content_dict['Benchmark']['plain-text']['#text']        
+
     ## PARSE DATE AND RELEASE DATA
-    raw_version = content_dict['Benchmark']['plain-text']['#text']
     raw_version = raw_version.split('Benchmark Date: ')
     BENCH_DATE = raw_version[1]
     REL = raw_version[0].replace('Release: ','')
