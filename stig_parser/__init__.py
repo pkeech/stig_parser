@@ -9,9 +9,34 @@ import os, xmltodict, json
 
 ## FUNCTION: CONVERT RAW XCCDF (XML) TO JSON
 def convert_xccdf(raw):
-    ## CREATE XSD PATH
-    #filepath = resource_filename(__name__, 'xccdf-1.1.4.xsd')
-        
+    
+    ## ----------------
+    ## ----- TEST -----
+    ## ----------------
+    # docker run -it python /bin/bash
+    # pip install stig-parser
+    # mkdir docker && cd docker
+    # curl https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_STIG.zip --output docker_stig.zip
+    # unzip docker_stig.zip
+    # python
+    # 
+    # from stig_parser import convert_xccdf
+    # import json
+    # f = open('/docker/U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_Manual_STIG/U_Docker_Enterprise_2-x_Linux-UNIX_STIG_V1R1_Manual-xccdf.xml', 'r')
+    # temp = convert_xccdf(f.read())
+    # print(json.dumps(temp, indent=4, sort_keys=True))
+    #
+    # f = open('/docker/U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_Manual_STIG/U_Docker_Enterprise_2-x_Linux-UNIX_STIG_V1R1_Manual-xccdf.xml', 'r')
+    # content_dict = xmltodict.parse(f.read())
+    # print(json.dumps(content_dict, indent=4, sort_keys=True))
+    #
+    #
+    # output = open('/docker/output.txt', 'w')
+    # print(json.dumps(content_dict, indent=4, sort_keys=True), file = output)
+    # output.close()
+
+
+
     ## CONVERT XML TO PYTHON DICTIONARY
     content_dict = xmltodict.parse(raw)
 
@@ -52,6 +77,11 @@ def convert_xccdf(raw):
             'description': STIG['Rule']['description'],
             'fixtext': STIG['Rule']['fixtext']['#text'],
             'check': STIG['Rule']['check']['check-content']
+
+            ## Rule ID
+            ## STIG ID
+            ## Classification
+            ## CCI #
         }
       
         ## ADD TO ARRAY

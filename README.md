@@ -14,6 +14,7 @@ To install stig-parser, simple run the following command:
 | :---: | --- | 
 | 1.0.0 | Initial Creation of `stig-parser` |
 | 1.0.1 | Updated to handle change to STIG schema ([Issue #3](/../../issues/3)) |
+| 1.0.2 | Added Additional Fields to Output JSON. View Release Notes for Full Details |
 
 ## Documentation
 
