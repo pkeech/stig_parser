@@ -1,13 +1,15 @@
+# DISA STIG Parser
+
 ![PyTest Scan](https://github.com/pkeech/stig_parser/actions/workflows/pytest-package.yml/badge.svg) ![PyPI](https://img.shields.io/pypi/v/stig-parser)
-## About
+### About
 A basic Python package to parse DISA STIG (XCCDF) Files into a readable JSON format.
 
-## Installation
+### Installation
 To install stig-parser, simple run the following command:
 
 `pip install stig-parser`
 
-## Version Updates
+### Version Updates
 The table below briefly describes each update. For more information, view the releases page.
 
 | Version | Description |
@@ -16,14 +18,14 @@ The table below briefly describes each update. For more information, view the re
 | 1.0.1 | Updated to handle change to STIG schema ([Issue #3](/../../issues/3)) |
 | 1.0.2 | Added Additional Fields to Output JSON. View Release Notes for Full Details ([Issue #9](/../../issues/9))|
 
-## Documentation
+### Documentation
 
 Documentation hasn't been created at this time. For the current development documentation, please visit the [repository](https://github.com/pkeech/stig_parser).
 
-## Testing 
+### Testing 
 _Placeholder_
 
-## Usage
+### Usage
 
 To use this package simply, import the module and run the `convert-xccdf()` function. This will result in the a JSON String object. 
 
@@ -42,7 +44,7 @@ json_results = convert_xccdf(raw_file)
 
 ```
 
-## Output
+### Output
 
 Outlined below is the expected JSON output:
 
@@ -77,7 +79,7 @@ Outlined below is the expected JSON output:
 ```
 
 
-## Dependencies
+### Dependencies
 
 The following packages are required for this package:
 
@@ -85,6 +87,6 @@ The following packages are required for this package:
 | :---: | --- |
 | xmltodict | This converts the raw XML file to a python dictionary for ease of processing |
 
-## Comments, Concerns and Gripes
+### Comments, Concerns and Gripes
 
 If you have any comments, concerns and/or gripes, please feel free to submit an issue on the [repository](https://github.com/pkeech/stig_parser).

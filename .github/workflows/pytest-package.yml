@@ -1,4 +1,4 @@
-name: PyTest Scan
+name: PyTest & Flake8
 
 on: 
   push:
