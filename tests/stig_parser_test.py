@@ -23,7 +23,6 @@ from src.stig_parser import convert_xccdf
 
 ## STIG FILENAME
 FILENAME = "tests/resources/U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_STIG.zip"
-#FILENAME = "tests/resources/missing.zip"
 
 ##  -----------------------
 ##  ---- PYTEST TESTS -----
