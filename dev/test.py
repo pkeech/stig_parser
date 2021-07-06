@@ -100,9 +100,17 @@ stiginfo_element = create_element('STIG_INFO', '', istig_element)
 ##  ----- STIG INFO ELEMENTS -----
 ##  ------------------------------
 
+## release-info plain-text(id) 
+## source dc:source(inner text)
+## notice notice(id)
+## uuid 
+## classification xml header(href STIG_unclass.xsl)
+
+
+
 ## DEBUG: STATIC ENTRIES FOR TESTING PURPOSES
 DESCRIP = "This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil."
-FILENAME = "U_Docker_Enterprise_2-x_Linux-UNIX_STIG_V1R1_Manual-xccdf.xml"
+FILENAME = "U_Docker_Enterprise_2-x_Linux-UNIX_STIG_V1R1_Manual-xccdf.xml"            
 TITLE = "Docker Enterprise 2.x Linux/UNIX Security Technical Implementation Guide"
 
 ## CREATE SI DATA (VERSION)
