@@ -29,40 +29,34 @@ STIG_NAME = RAW_NAME.replace(("_" + STIG_VERSION + "_STIG"), "")
 
 
 
-print("Version: " + STIG_VERSION)
-print("Name: " + STIG_NAME)
-
-STIG_NAME = COMPRESSED_ZIP.split(".")
-STIG_PATH = STIG_NAME[0].replace("_STIG", "")
-STIG_PATH = STIG_PATH + "_Manual_STIG"
-STIG_PATH = STIG_NAME[0] + "/" + STIG_PATH + "/" + (STIG_PATH.replace("_STIG", "")) + "-xccdf.xml"
-
-
-## DEBUG
-#print ("[INFO] Source STIG ZIP File:     " + COMPRESSED_ZIP)
-#print ("[INFO] STIG Name:                " + STIG_NAME[0])
-#print ("[INFO] Path to XML File:         " + STIG_PATH)
-
-
 #  U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_STIG/U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_Manual_STIG/U_Docker_Enterprise_2-x_Linux-UNIX_STIG_V1R1_Manual-xccdf.xml
 #                                                                                                   U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_STIG
 #  U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_STIG/U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_Manual_STIG/U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_Manual_STIG-xccdf.xml
 #  U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_STIG/U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_Manual_STIG/U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_Manual-xccdf.xml
 
 
-## OPEN XML FILE FROM ZIP FILE
+## OPEN XML FILE FROM ZIP FILE AND OBTAIN LIST OF FILES
 z = zipfile.ZipFile(COMPRESSED_ZIP)
+files = z.namelist()
+
+## FIND MANUAL STIG FILE
+for file in files:
+    if file.endswith('_Manual-xccdf.xml'):
+        ## HANDLE MACOS
+        if not file.startswith('__MACOS'):
+            print ("[INFO] STIG Filename: " + file)
+            FILENAME = file
+            break
+
+## READ STIG FILE
+f = z.read(FILENAME)
 
 
-#files = z.namelist()
+bytes = z.read(filename)
+    print 'has',len(bytes),'bytes'
 
-#for file in files:
-#    if file == STIG_PATH:
-#        print ("-----> " + file)
-#    else:
-#        print (file)
-
-#f = z.open(STIG_PATH)
+## DEBUG
+print ("[DEBUG] " + f)
 
 #with zipfile.ZipFile('/path/to/my_file.apk') as z:
 #    with open('temp/icon.png', 'wb') as f:
