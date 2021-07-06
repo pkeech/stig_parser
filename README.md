@@ -1,14 +1,14 @@
+![PyTest Scan](https://github.com/pkeech/stig_parser/actions/workflows/pytest-package.yml/badge.svg)
 ## About
-
 A basic Python package to parse DISA STIG (XCCDF) Files into a readable JSON format.
 
 ## Installation
-
 To install stig-parser, simple run the following command:
 
 `pip install stig-parser`
 
 ## Version Updates
+The table below briefly describes each update. For more information, view the releases page.
 
 | Version | Description |
 | :---: | --- | 
