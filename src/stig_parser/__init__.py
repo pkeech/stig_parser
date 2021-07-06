@@ -73,7 +73,8 @@ def convert_xccdf(raw):
         "release": REL,
         "benchmark_date": BENCH_DATE,
         "release_info": release_info,
-        "source": ''
+        "source": content_dict['Benchmark']['reference']['dc:source'],
+        "notice": content_dict['Benchmark']['notice']['@id']
     }
 
     ## GENERATE EMPTY ARRAY
@@ -81,6 +82,9 @@ def convert_xccdf(raw):
 
     ## LOOP THROUGH STIGS
     for STIG in content_dict['Benchmark']['Group']:
+
+        ## CONVERT IDENT ORDEREDDICT TO JSON
+        IDENT = STIG['Rule']['ident']
 
         ## DEFINE STIG
         oSTIG = {
@@ -90,13 +94,19 @@ def convert_xccdf(raw):
             'title': STIG['Rule']['title'],
             'description': STIG['Rule']['description'],
             'fixtext': STIG['Rule']['fixtext']['#text'],
-            'check': STIG['Rule']['check']['check-content']
-
-            ## Rule ID
-            ## STIG ID
-            ## Classification
-            ## CCI #
+            'check': STIG['Rule']['check']['check-content'],
+            'cci': IDENT,
+            'stig_id': STIG['Rule']['version'],
+            'rule_id': STIG['Rule']['@id']
         }
+
+        """
+        [
+            ('@system', 'http://iase.disa.mil/cci'), 
+            ('#text', 'CCI-000054')
+        ]
+        """
+
       
         ## ADD TO ARRAY
         STIGS.append(oSTIG)

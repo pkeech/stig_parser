@@ -70,3 +70,7 @@ def test_parse_stig() -> None:
     assert STIG_JSON['rules'][0]['id'] == "V-94863"     ## FIRST RULE ID
     assert STIG_JSON['release_info'] == "Release: 1 Benchmark Date: 19 Jul 2019"    ## RELEASE INFO
     assert STIG_JSON['source'] == "STIG.DOD.MIL"    ## SOURCE
+    assert STIG_JSON['notice'] == "terms-of-use"    ## NOTICE
+    #assert STIG_JSON['rules'][0]['cci'] == "CCI-000054"    ## FIRST RULE CCI NUMBER
+    assert STIG_JSON['rules'][0]['stig_id'] == "DKER-EE-001000"     ## FIRST RULE STIG ID
+    assert STIG_JSON['rules'][0]['rule_id'] == "SV-104693r1_rule"   ## FIRST RULE ID
