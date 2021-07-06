@@ -1,11 +1,20 @@
-##########################
-##  STIG PARSER MODULE  ##
-##########################
+##  ==============================
+##  ===== STIG PARSER MODULE =====
+##  ==============================
+
+##  Created By  : Peter Keech
+##  Email       : peter.a.keech@gmail.com
+##  Version     : 1.0.2
+##  Description : STIG-Parser v1.0.2 Module
+##  Requirements: xmltodict
+##  Build       : docker run -it --rm -v $(PWD):/stig-parser python /bin/bash
+##                cd stig-parser
+##                python3 -m pip install --upgrade build
+##                python3 -m build
+##                
 
 ## IMPORT REQUIRED EXTERNAL MODULES
 import os, xmltodict, json
-#from pkg_resources import resource_filename
-
 
 ## FUNCTION: CONVERT RAW XCCDF (XML) TO JSON
 def convert_xccdf(raw):
@@ -48,7 +57,10 @@ def convert_xccdf(raw):
         ## OLD VERSION
         raw_version = content_dict['Benchmark']['plain-text']['#text']        
 
-    ## PARSE DATE AND RELEASE DATA
+    ## SAVE RELEASE INFO
+    release_info = raw_version
+
+    ## FORMAT RELEASE INFO FOR SPECIFIC DATA FIELDS
     raw_version = raw_version.split('Benchmark Date: ')
     BENCH_DATE = raw_version[1]
     REL = raw_version[0].replace('Release: ','')
@@ -59,7 +71,9 @@ def convert_xccdf(raw):
         "description": content_dict['Benchmark']['description'],
         "version": content_dict['Benchmark']['version'],
         "release": REL,
-        "benchmark_date": BENCH_DATE
+        "benchmark_date": BENCH_DATE,
+        "release_info": release_info,
+        "source": ''
     }
 
     ## GENERATE EMPTY ARRAY
