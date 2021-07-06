@@ -49,6 +49,7 @@ def convert_xccdf(raw):
         raw_version = content_dict['Benchmark']['plain-text']['#text']        
 
     ## PARSE DATE AND RELEASE DATA
+    release_info = raw_version
     raw_version = raw_version.split('Benchmark Date: ')
     BENCH_DATE = raw_version[1]
     REL = raw_version[0].replace('Release: ','')
@@ -59,7 +60,11 @@ def convert_xccdf(raw):
         "description": content_dict['Benchmark']['description'],
         "version": content_dict['Benchmark']['version'],
         "release": REL,
-        "benchmark_date": BENCH_DATE
+        "release_info": release_info,
+        "benchmark_date": BENCH_DATE,
+        "source": '', 
+        "notice": '',
+        "classification": ''
     }
 
     ## GENERATE EMPTY ARRAY
