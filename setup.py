@@ -1,11 +1,13 @@
 import setuptools
+import versioneer
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name='stig_parser',  
-    version='1.0.2',
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     author="Peter Keech",
     author_email="peter.a.keech@gmail.com",
     description="A Python module to parse DISA STIG (XCCDF) Files",
