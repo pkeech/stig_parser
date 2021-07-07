@@ -32,7 +32,7 @@ jobs:
           # Upgrade pip
           python3 -m pip install --upgrade pip
           # Install Dependencies
-          python3 -m pip install --upgrade build flake8 pytest xmltodict
+          python3 -m pip install --upgrade build flake8 pytest xmltodict twine
 
       ## RUN PYTEST TESTER
       - name: "Run PYTest Tests"
@@ -54,4 +54,11 @@ jobs:
           python3 -m build
 
       ## PUBLISH PACKAGE TO TESTPYPI
+      - name: "Publish Package to Test PyPi"
+        run: |
+          python3 -m twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TWINE_TEST_TOKEN }}
+          TWINE_REPOSITORY: testpypi      
       
