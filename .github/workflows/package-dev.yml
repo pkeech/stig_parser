@@ -75,7 +75,7 @@ jobs:
           # Upgrade pip
           python3 -m pip install --upgrade pip
           # Install Dependencies
-          python3 -m pip install --upgrade build xmltodict 
+          python3 -m pip install --upgrade build xmltodict twine
 
       ## BUILD PACKAGE
       - name: "Build Python Package"
@@ -85,12 +85,18 @@ jobs:
 
       ## PUBLISH PACKAGE TO TESTPYPI
       - name: "Publish Package to Test PyPi"
-        run: |
-          python3 -m twine upload dist/*
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.TWINE_TEST_TOKEN }}
-          TWINE_REPOSITORY: testpypi  
+        if: github.repository == 'pkeech/stig_parser' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          password: ${{ secrets.TEST_PYPI_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+
+        #run: |
+        #  python3 -m twine upload dist/*
+        #env:
+        #  TWINE_USERNAME: __token__
+        #  TWINE_PASSWORD: ${{ secrets.TWINE_TEST_TOKEN }}
+        #  TWINE_REPOSITORY: testpypi  
 
 
 
