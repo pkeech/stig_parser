@@ -47,7 +47,7 @@ def convert_xccdf(raw):
 
 
     ## CONVERT XML TO PYTHON DICTIONARY
-    content_dict = xmltodict.parse(raw)
+    content_dict = xmltodict.parse(raw, dict_constructor=dict)
 
     ## HANDLE NEW VS. OLD VERSION OF STIG SCHEMA (ISSUE #3)
     if isinstance(content_dict['Benchmark']['plain-text'], list):
@@ -83,6 +83,23 @@ def convert_xccdf(raw):
     ## LOOP THROUGH STIGS
     for STIG in content_dict['Benchmark']['Group']:
 
+        ## PARSE IDENT 
+        IDENT = STIG['Rule']['ident']
+
+        ## HANDLE MULTIPLE IDENT ENTRIES
+        if len(IDENT) == 2:
+            IDENT = IDENT['#text']
+        else:
+            ## DEFINE EMPTY RESULTS
+            RESULTS = ""
+        
+            ## LOOP THROUGH ALL CCI NUMBERS
+            for result in IDENT:
+                RESULTS += result['#text'] + ","
+
+            ## REMOVE LAST ','
+            IDENT = RESULTS.rstrip(RESULTS[-1])
+         
         ## DEFINE STIG
         oSTIG = {
             'id': STIG['@id'],
@@ -92,19 +109,11 @@ def convert_xccdf(raw):
             'description': STIG['Rule']['description'],
             'fixtext': STIG['Rule']['fixtext']['#text'],
             'check': STIG['Rule']['check']['check-content'],
-            #'cci': STIG['Rule']['ident'],
+            'cci': IDENT,
             'stig_id': STIG['Rule']['version'],
             'rule_id': STIG['Rule']['@id']
         }
-
-        """
-        [
-            ('@system', 'http://iase.disa.mil/cci'), 
-            ('#text', 'CCI-000054')
-        ]
-        """
-
-      
+              
         ## ADD TO ARRAY
         STIGS.append(oSTIG)
 
