@@ -85,12 +85,17 @@ jobs:
 
       ## PUBLISH PACKAGE TO TESTPYPI
       - name: "Publish Package to Test PyPi"
-        run: |
-          python3 -m twine upload dist/*
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.TWINE_TEST_TOKEN }}
-          TWINE_REPOSITORY: testpypi  
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          password: ${{ secrets.TEST_PYPI_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+          
+        #run: |
+        #  python3 -m twine upload dist/*
+        #env:
+        #  TWINE_USERNAME: __token__
+        #  TWINE_PASSWORD: ${{ secrets.TWINE_TEST_TOKEN }}
+        #  TWINE_REPOSITORY: testpypi  
 
 
 
