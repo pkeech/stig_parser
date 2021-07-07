@@ -83,9 +83,6 @@ def convert_xccdf(raw):
     ## LOOP THROUGH STIGS
     for STIG in content_dict['Benchmark']['Group']:
 
-        ## CONVERT IDENT ORDEREDDICT TO JSON
-        IDENT = STIG['Rule']['ident']
-
         ## DEFINE STIG
         oSTIG = {
             'id': STIG['@id'],
@@ -95,7 +92,7 @@ def convert_xccdf(raw):
             'description': STIG['Rule']['description'],
             'fixtext': STIG['Rule']['fixtext']['#text'],
             'check': STIG['Rule']['check']['check-content'],
-            'cci': IDENT,
+            #'cci': STIG['Rule']['ident'],
             'stig_id': STIG['Rule']['version'],
             'rule_id': STIG['Rule']['@id']
         }
