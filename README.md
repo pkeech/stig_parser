@@ -17,7 +17,7 @@
 </p>
 
 <!-- PROJECT SHIELDS -->
-![GitHub last commit][commit-shield]]
+![GitHub last commit][commit-shield]
 [![PyPi][pypi-shield]][pypi-url]
 [![GitHub Workflow Status][workflow-shield]][workflow-url]
 [![GitHub Workflow Status (Test)][workflow-test-shield]][workflow-test-url]
