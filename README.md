@@ -25,7 +25,7 @@
 [![GitHub Open PRs][pr-shield]][pr-url]
 ![Python Versions][python-version-shield]
 [![GitHub License][license-shield]][license-url]
-[![LinkedIN Profile][linkedin-sheild]][linkedin-url]
+[![LinkedIN Profile][linkedin-shield]][linkedin-url]
 
 ### About
 A basic Python package to parse DISA STIG (XCCDF) Files into a readable JSON format.
