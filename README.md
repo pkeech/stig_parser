@@ -16,8 +16,6 @@
     <img src="docs/images/STIG_Parser.png" alt="Logo" />
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
-
   <p align="center">
     <a href="#"><strong>Explore the docs »</strong></a>
     <br />
