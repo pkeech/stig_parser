@@ -1,8 +1,40 @@
+<!-- PROJECT SHIELDS -->
+[GitHub last commit][commit-shield]]
+[![PyPi][pypi-shield]][pypi-url]
+[![GitHub Workflow Status][workflow-shield]][workflow-url]
+[![GitHub Workflow Status (Test)][workflow-test-shield]][workflow-test-url]
+
+[![GitHub Open Issues][issues-shield]][issues-url]
+[![GitHub Open PRs][pr-shield]][pr-url]
+
+[![GitHub License][license-shield]][license-url]
+
+
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
+<!-- PROJECT LOGO -->
+<br />
 <p align="center">
-  <img src="docs/images/STIG_Parser.png" />
+  <a href="https://github.com/pkeech/stig_parser">
+    <!--<img src="images/logo.png" alt="Logo" width="80" height="80">-->
+    <img src="docs/images/STIG_Parser.png" alt="Logo" />
+  </a>
+
+  <h3 align="center">Best-README-Template</h3>
+
+  <p align="center">
+    <a href="#"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/pkeech/stig_parser/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/pkeech/stig_parser/issues">Request Feature</a>
+  </p>
 </p>
 
-![GitHub last commit](https://img.shields.io/github/last-commit/pkeech/stig_parser?style=for-the-badge) [![PyPI](https://img.shields.io/pypi/v/stig-parser?style=for-the-badge)](https://pypi.org/project/stig-parser/) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/pkeech/stig_parser/STIG%20Parser%20CI?style=for-the-badge) [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/pkeech/stig_parser/STIG%20Parser%20CI%20(Test)?label=BUILD%20%28TEST%29&style=for-the-badge)](https://github.com/pkeech/stig_parser/actions) ![GitHub issues](https://img.shields.io/github/issues/pkeech/stig_parser?style=for-the-badge) ![GitHub pull requests](https://img.shields.io/github/issues-pr/pkeech/stig_parser?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/pkeech/stig_parser?style=for-the-badge)
 
 ### About
 A basic Python package to parse DISA STIG (XCCDF) Files into a readable JSON format.
@@ -107,3 +139,19 @@ The following packages are required for this package:
 
 If you have any comments, concerns and/or gripes, please feel free to submit an issue on the [repository](https://github.com/pkeech/stig_parser).
 
+<!-- MARKDOWN LINKS & IMAGES -->
+[commit-shield]: https://img.shields.io/github/last-commit/pkeech/stig_parser?style=for-the-badge
+[pypi-shield]: https://img.shields.io/pypi/v/stig-parser?style=for-the-badge
+[pypi-url]: https://pypi.org/project/stig-parser/
+[workflow-shield]: https://img.shields.io/github/workflow/status/pkeech/stig_parser/STIG%20Parser%20CI?style=for-the-badge
+[workflow-url]: https://github.com/pkeech/stig_parser/actions
+[workflow-test-shield]: https://img.shields.io/github/workflow/status/pkeech/stig_parser/STIG%20Parser%20CI%20(Test)?label=BUILD%20%28TEST%29&style=for-the-badge
+[workflow-test-url]: https://github.com/pkeech/stig_parser/actions
+[issues-shield]: https://img.shields.io/github/issues/pkeech/stig_parser?style=for-the-badge
+[issues-url]: https://github.com/pkeech/stig_parser/issues
+[pr-shield]: https://img.shields.io/github/issues-pr/pkeech/stig_parser?style=for-the-badge
+[pr-url]: https://github.com/pkeech/stig_parser/pulls
+[license-shield]: https://img.shields.io/github/license/pkeech/stig_parser?style=for-the-badge
+[license-url]: https://github.com/pkeech/stig_parser/blob/master/LICENSE
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/peter-keech-b88183a2/
