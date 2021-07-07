@@ -1,4 +1,6 @@
-# DISA STIG Parser
+<p align="center">
+  <img src="docs/images/STIG_Parser.png" />
+</p>
 
 ![PyTest Scan](https://github.com/pkeech/stig_parser/actions/workflows/pytest-package.yml/badge.svg) ![PyPI](https://img.shields.io/pypi/v/stig-parser)
 ### About
