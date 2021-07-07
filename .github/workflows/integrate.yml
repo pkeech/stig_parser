@@ -1,5 +1,5 @@
 ## NAME GITHUB ACTION WORKFLOW
-name: PyTest & Flake8
+name: STIG Parser CI (Test)
 
 ## RUN WORKFLOW WHEN
 on: 

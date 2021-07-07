@@ -1,5 +1,5 @@
 ## NAME GITHUB ACTION WORKFLOW
-name: Test & Upload to TestPyPI
+name: STIG Parser CI (Dev)
 
 ## RUN WORKFLOW WHEN
 on:
@@ -82,7 +82,7 @@ jobs:
         run: |
           # Build Python Package
           python3 -m build
-          
+
       ## PUBLISH PACKAGE TO TESTPYPI
       - name: "Publish Package to Test PyPi"
         run: |
