@@ -50,8 +50,8 @@ jobs:
       ## BUILD PACKAGE
       - name: "Build Python Package"
         run: |
-        # Build Python Package
-        python3 -m build
+          # Build Python Package
+          python3 -m build
 
       ## PUBLISH PACKAGE TO TESTPYPI
       
