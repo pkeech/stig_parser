@@ -3,17 +3,10 @@
 [![PyPi][pypi-shield]][pypi-url]
 [![GitHub Workflow Status][workflow-shield]][workflow-url]
 [![GitHub Workflow Status (Test)][workflow-test-shield]][workflow-test-url]
-
 [![GitHub Open Issues][issues-shield]][issues-url]
 [![GitHub Open PRs][pr-shield]][pr-url]
-
 [![GitHub License][license-shield]][license-url]
 
-
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- PROJECT LOGO -->
 <br />
