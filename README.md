@@ -16,16 +16,29 @@ The table below briefly describes each update. For more information, view the re
 
 | Version | Description |
 | :---: | --- | 
-| 1.0.0 | Initial Creation of `stig-parser` |
-| 1.0.1 | Updated to handle change to STIG schema ([Issue #3](/../../issues/3)) |
-| 1.0.2 | Added Additional Fields to Output JSON. View Release Notes for Full Details ([Issue #9](/../../issues/9))|
+| 1.0.0 | Initial Creation of **stig-parser** |
+| 1.0.1 | Updated to handle change to STIG schema ([Issue #3](https://github.com/pkeech/stig_parser/issues/3)) |
+| 1.0.2 | Added Additional Fields to Output JSON. View Release Notes for Full Details ([Issue #9](https://github.com/pkeech/stig_parser/issues/9))|
 
 ### Documentation
 
 Documentation hasn't been created at this time. For the current development documentation, please visit the [repository](https://github.com/pkeech/stig_parser).
 
 ### Testing 
-_Placeholder_
+This project leverages GitHub Actions for its CI/CD workflow. During a Push to any branch, with the exception of `Master` and `Dev`, the workflow will perform Unit Testing and Linting.
+
+For manual testing, run the following commands;
+
+``` bash
+## START PYTHON DEV CONTAINER
+docker run -it --rm -v $(PWD)/dev:/testing python /bin/bash
+
+## INSTALL DEPENDENCIES
+pip install pytest
+
+## RUN PYTEST
+pytest
+```
 
 ### Usage
 

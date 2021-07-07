@@ -12,7 +12,7 @@
 ## IMPORT REQUIREMENTS
 import zipfile, json
 from stig_parser import convert_xccdf
-from checklist import create_checklist
+#from checklist import create_checklist
 
 ## DEBUG: STATIC VARIABLES FOR TESTING PURPOSES
 COMPRESSED_ZIP = "U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_STIG.zip"
@@ -47,13 +47,13 @@ rawFile = z.read(FILENAME)
 STIG_JSON = convert_xccdf(rawFile)
 
 ## GENERATE BLANK CHECKLIST
-Checklist = create_checklist(STIG_JSON, FILENAME)
+#Checklist = create_checklist(STIG_JSON, FILENAME)
 
 ## DEBUG
-print(Checklist.toJSON())
+#print(Checklist.toJSON())
 
 ## DEBUG: Pretty Print STIG JSON Object
-#print(json.dumps(STIG_JSON, indent=4))
+print(json.dumps(STIG_JSON, indent=4))
 
 ## DEBUG: Write JSON to File
 #with open('dump.json', 'w') as outfile:
