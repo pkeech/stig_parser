@@ -23,7 +23,9 @@
 [![GitHub Workflow Status (Test)][workflow-test-shield]][workflow-test-url]
 [![GitHub Open Issues][issues-shield]][issues-url]
 [![GitHub Open PRs][pr-shield]][pr-url]
+![Python Versions][python-version-shield]
 [![GitHub License][license-shield]][license-url]
+[![LinkedIN Profile][linkedin-sheild]][linkedin-url]
 
 ### About
 A basic Python package to parse DISA STIG (XCCDF) Files into a readable JSON format.
@@ -140,6 +142,7 @@ If you have any comments, concerns and/or gripes, please feel free to submit an 
 [issues-url]: https://github.com/pkeech/stig_parser/issues
 [pr-shield]: https://img.shields.io/github/issues-pr/pkeech/stig_parser?style=for-the-badge
 [pr-url]: https://github.com/pkeech/stig_parser/pulls
+[python-version-shield]: https://img.shields.io/pypi/pyversions/stig-parser?style=for-the-badge
 [license-shield]: https://img.shields.io/github/license/pkeech/stig_parser?style=for-the-badge
 [license-url]: https://github.com/pkeech/stig_parser/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
