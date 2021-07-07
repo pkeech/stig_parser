@@ -1,36 +1,54 @@
-# This workflow will upload a Python Package using Twine when a release is created
-# For more information see: https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
+## NAME GITHUB ACTION WORKFLOW
+name: STIG Parser CI/CD
 
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Upload Python Package
-
+## RUN WORKFLOW WHEN
 on:
-  release:
-    types: [published]
+  ## PR TO DEV
+  pull_request:
+    branches: [ master ]
+  
+  ## ALLOW FOR MANUAL EXECUTION
+  workflow_dispatch:
 
-jobs:
-  deploy:
+## DEFINE WORKFLOW
+jobs:   
+  ## DEFINE BUILD JOB
+  build-publish:
+    ## DEFINE NAME
+    name: "Build & Publish"
 
+    ## WAIT FOR TEST JOB
+    needs: test
+
+    ## DEFINE WORKER
     runs-on: ubuntu-latest
 
+    ## DEFINE STEPS
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install build
-    - name: Build package
-      run: python -m build
-    - name: Publish package
-      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
+      ## CLONE REPO CODE
+      - uses: actions/checkout@v2
+
+      ## SETUP PYTHON3
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      ## CONFIGURE WORKER TO PUBLISH PACKAGE
+      - name: "Install Dependencies"
+        run: |
+          # Upgrade pip
+          python3 -m pip install --upgrade pip
+          # Install Dependencies
+          python3 -m pip install --upgrade build xmltodict
+
+      ## BUILD PACKAGE
+      - name: "Build Python Package"
+        run: |
+          # Build Python Package
+          python3 -m build
+
+      ## PUBLISH PACKAGE TO TESTPYPI
+      - name: "Publish Package to Test PyPi"
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          password: ${{ secrets.PYPI_TOKEN }}

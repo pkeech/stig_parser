@@ -1,5 +1,5 @@
 ## NAME GITHUB ACTION WORKFLOW
-name: STIG Parser CI (Dev)
+name: STIG Parser CI/CD (Dev)
 
 ## RUN WORKFLOW WHEN
 on:
