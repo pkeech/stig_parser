@@ -14,6 +14,9 @@ on:
 jobs:   
   ## DEFINE TEST JOB
   test:
+    ## DEFINE NAME
+    name: "Unit Testing & Linting"
+    
     ## DEFINE WORKER
     runs-on: ubuntu-latest
 
