@@ -75,7 +75,7 @@ jobs:
           # Upgrade pip
           python3 -m pip install --upgrade pip
           # Install Dependencies
-          python3 -m pip install --upgrade build xmltodict 
+          python3 -m pip install --upgrade build xmltodict twine
 
       ## BUILD PACKAGE
       - name: "Build Python Package"
