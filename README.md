@@ -2,7 +2,7 @@
   <img src="docs/images/STIG_Parser.png" />
 </p>
 
-![PyTest Scan](https://github.com/pkeech/stig_parser/actions/workflows/pytest-package.yml/badge.svg) ![PyPI](https://img.shields.io/pypi/v/stig-parser)
+[![PyTest Scan](https://github.com/pkeech/stig_parser/actions/workflows/pytest-package.yml/badge.svg)](https://github.com/pkeech/stig_parser/actions) [![PyPI](https://img.shields.io/pypi/v/stig-parser)](https://pypi.org/project/stig-parser/)
 ### About
 A basic Python package to parse DISA STIG (XCCDF) Files into a readable JSON format.
 
