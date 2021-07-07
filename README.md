@@ -2,7 +2,7 @@
   <img src="docs/images/STIG_Parser.png" />
 </p>
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/pkeech/stig_parser/STIG%20Parser%20CI%20(Test)?label=BUILD%20%28TEST%29&style=for-the-badge)](https://github.com/pkeech/stig_parser/actions) ![GitHub last commit](https://img.shields.io/github/last-commit/pkeech/stig_parser?style=for-the-badge) [![PyPI](https://img.shields.io/pypi/v/stig-parser?style=for-the-badge)](https://pypi.org/project/stig-parser/)
+![GitHub last commit](https://img.shields.io/github/last-commit/pkeech/stig_parser?style=for-the-badge) [![PyPI](https://img.shields.io/pypi/v/stig-parser?style=for-the-badge)](https://pypi.org/project/stig-parser/) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/pkeech/stig_parser/STIG%20Parser%20CI?label=BUILD%20%28TEST%29&style=for-the-badge) [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/pkeech/stig_parser/STIG%20Parser%20CI%20(Test)?label=BUILD%20%28TEST%29&style=for-the-badge)](https://github.com/pkeech/stig_parser/actions)
 ### About
 A basic Python package to parse DISA STIG (XCCDF) Files into a readable JSON format.
 
