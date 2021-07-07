@@ -17,9 +17,9 @@ setuptools.setup(
         'xmltodict'
     ],
     classifiers=[
-         "Programming Language :: Python :: 3",
-         "License :: OSI Approved :: MIT License",
-         "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
     ],
     package_dir={"": "src"},
     python_requires='>=3.6',
