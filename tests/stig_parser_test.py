@@ -15,7 +15,7 @@
 import zipfile, os, pytest
 
 ## IMPORT STIG-PARSER
-from src import convert_xccdf
+from src.stig_parser import convert_xccdf
 
 ##  ----------------------------------------
 ##  ---- STATICALLY SET TEST VARIABLES -----
