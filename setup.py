@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='stig_parser',  
-    version='1.0.3',
+    version='1.0.3-rc1',
     license='MIT',
     author="Peter Keech",
     author_email="peter.a.keech@gmail.com",
