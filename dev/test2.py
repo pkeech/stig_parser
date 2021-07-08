@@ -53,8 +53,8 @@ STIG_JSON = convert_xccdf(rawFile)
 #print(Checklist.toJSON())
 
 ## DEBUG: Pretty Print STIG JSON Object
-print(json.dumps(STIG_JSON, indent=4))
+#print(json.dumps(STIG_JSON, indent=4))
 
 ## DEBUG: Write JSON to File
-#with open('dump.json', 'w') as outfile:
-#    json.dump(STIG_JSON, outfile, indent=4)
+with open('dump.json', 'w') as outfile:
+    json.dump(STIG_JSON, outfile, indent=4)

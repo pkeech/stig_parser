@@ -45,7 +45,6 @@ The table below briefly describes each update. For more information, view the re
 | 1.0.2 | Added Additional Fields to Output JSON. View Release Notes for Full Details ([Issue #9](https://github.com/pkeech/stig_parser/issues/9))|
 
 ### Documentation
-
 Documentation hasn't been created at this time. For the current development documentation, please visit the [repository](https://github.com/pkeech/stig_parser).
 
 ### Testing 
@@ -65,7 +64,6 @@ pytest
 ```
 
 ### Usage
-
 To use this package simply, import the module and run the `convert-xccdf()` function. This will result in the a JSON String object. 
 
 ``` python
@@ -84,42 +82,47 @@ json_results = convert_xccdf(raw_file)
 ```
 
 ### Output
-
 Outlined below is the expected JSON output:
 
 ``` json
 {
-    benchmark_date: "xxxxxxx",
-    description: "xxxxxxxx",
-    release: "xx",
-    rules: [
+    "title": "xxxxxxx",
+    "description": "xxxxxxx",
+    "version": "x",
+    "release": "x ",
+    "benchmark_date": "xxxxxxx",
+    "release_info": "xxxxxxx",
+    "source": "xxxxxxx",
+    "notice": "xxxxxxx",
+    "rules": [
         {
-            "check": "xxxxxxxx", 
-            "description": "xxxxxxxxxx", 
-            "fixtext": "xxxxxxxxxx", 
-            "id": "xxxxxxx", 
-            "severity": "xxxxxxxx", 
-            "stig_id": "xx-xx-xxxxxx", 
-            "title": "xxxxxxxxxxx"
+            "id": "xxxxxxx",
+            "stig_id": "xxxxxxx",
+            "severity": "xxxxxxx",
+            "title": "xxxxxxx",
+            "description": "xxxxxxx",
+            "fixtext": "xxxxxxx",
+            "check": "xxxxxxx",
+            "cci": "xxxxxxx",
+            "rule_id": "xxxxxxx"
         },
         {
-            "check": "xxxxxxxx", 
-            "description": "xxxxxxxxxx", 
-            "fixtext": "xxxxxxxxxx", 
-            "id": "xxxxxxx", 
-            "severity": "xxxxxxxx", 
-            "stig_id": "xx-xx-xxxxxx", 
-            "title": "xxxxxxxxxxx"
+            "id": "xxxxxxx",
+            "stig_id": "xxxxxxx",
+            "severity": "xxxxxxx",
+            "title": "xxxxxxx",
+            "description": "xxxxxxx",
+            "fixtext": "xxxxxxx",
+            "check": "xxxxxxx",
+            "cci": "xxxxxxx",
+            "rule_id": "xxxxxxx"
         }
-    ],
-    title: "xxxxxxxxxx",
-    version: "xxxxxxxxx"
+    ]
 }
 ```
 
 
 ### Dependencies
-
 The following packages are required for this package:
 
 | Package Name | Reason |
@@ -127,7 +130,6 @@ The following packages are required for this package:
 | xmltodict | This converts the raw XML file to a python dictionary for ease of processing |
 
 ### Comments, Concerns and Gripes
-
 If you have any comments, concerns and/or gripes, please feel free to submit an issue on the [repository](https://github.com/pkeech/stig_parser).
 
 <!-- MARKDOWN LINKS & IMAGES -->
