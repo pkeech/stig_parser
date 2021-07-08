@@ -12,48 +12,11 @@ on:
 
 ## DEFINE WORKFLOW
 jobs:
-  ## DEFINE UNIT TESTING JOB
-  unit-testing:
-    ## DEFINE JOB NAME
-    name: "Unit Testing (PyTest)"
-
-    ## DEFINE WORKER
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
-    
-    ## DEFINE STEPS
-    steps:
-      ## CLONE REPO CODE
-      - uses: actions/checkout@v2
-
-      ## SETUP PYTHON3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      ## CONFIGURE WORKER TO PERFORM TESTS
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest xmltodict
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-      ## PERFORM UNIT TEST WITH PYTEST
-      - name: Test with pytest
-        run: |
-          pytest
-
   ## DEFINE LINT TEST JOB
   linting:
     ## DEFINE JOB NAME
     name: "Lint Testing"
 
-    ## WAIT FOR PREVIOUS JOB
-    needs: unit-testing
-    
     ## DEFINE WORKER
     runs-on: ubuntu-latest
     strategy:
@@ -86,13 +49,59 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 ./src --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-  ## DEFINE SAST JOB
+  ## DEFINE UNIT TESTING JOB
+  unit-testing:
+    ## DEFINE JOB NAME
+    name: "Code Coverage & Unit Testing"
+
+    ## WAIT FOR PREVIOUS JOB
+    needs: linting
+
+    ## DEFINE WORKER
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    
+    ## DEFINE ENVIRONMENT VARIABLES
+    env:
+      COVERAGE_SINGLE: 60   ## MINIMUM COVERAGE PERCENTAGE PER FILE
+      COVERAGE_TOTAL: 60    ## MINIMUM COVERAGE PERCENTAGE TOTAL
+
+    ## DEFINE STEPS
+    steps:
+      ## CLONE REPO CODE
+      - uses: actions/checkout@v2
+
+      ## SETUP PYTHON3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      ## CONFIGURE WORKER TO PERFORM TESTS
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest flake8 xmltodict
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      ## PERFORM PYTEST AND CODE COVERAGE TEST
+      - name: pytest
+        id: pytest
+        uses: alexanderdamiani/pytester-cov@v1.2.0
+        with:
+          pytest-root-dir: 'src'
+          cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
+          cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
+
+  ## DEFINE SAST (SEMGREP) JOB
   sast-semgrep:
     ## DEFINE NAME
     name: "SAST (SEMGREP)"
 
     ## WAIT FOR PREVIOUS JOB
-    needs: linting
+    needs: unit-testing
     
     ## DEFINE WORKER
     runs-on: ubuntu-latest
@@ -128,7 +137,7 @@ jobs:
     name: "SAST (BANDIT)"
 
     ## WAIT FOR PREVIOUS JOB
-    needs: linting
+    needs: unit-testing
     
     ## DEFINE WORKER
     runs-on: ubuntu-latest
