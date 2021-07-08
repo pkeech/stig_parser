@@ -146,9 +146,8 @@ jobs:
 
       ## RUN BANDIT SCAN
       - name: "Performing Bandit Scan"
-        uses: jpetrucciani/bandit-check@master
-        with:
-          path: '--verbose -ll --skip B104 ./src/ --format sarif --output results.sarif'
+        run: |
+          bandit -r ./src/ --verbose -ll --skip B104 --format sarif --output results.sarif
 
       ## UPLOAD SECURITY REPORT
       - name: "Upload Security Report"
