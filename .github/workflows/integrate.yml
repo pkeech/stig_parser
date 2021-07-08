@@ -106,7 +106,7 @@ jobs:
       - uses: actions/checkout@v2
 
       ## PERFORM SEMGREP SCAN
-      - name: "SEMGREP SCAN"
+      - name: "Performing Semgrep Scan"
         uses: returntocorp/semgrep-action@v1
         with:
           config: >- # more at semgrep.dev/explore
@@ -128,7 +128,7 @@ jobs:
     name: "SAST (BANDIT)"
 
     ## WAIT FOR PREVIOUS JOB
-    needs: sast-semgrep
+    needs: linting
     
     ## DEFINE WORKER
     runs-on: ubuntu-latest
@@ -139,7 +139,7 @@ jobs:
       - uses: actions/checkout@v2
 
       ## RUN BANDIT SCAN
-      - name: "BANDIT SCAN"
+      - name: "Performing Bandit Scan"
         uses: jpetrucciani/bandit-check@master
         with:
           path: '.github/'

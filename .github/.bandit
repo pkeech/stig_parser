@@ -1,2 +1,2 @@
 [bandit]
-targets: /src 
+targets: src 
