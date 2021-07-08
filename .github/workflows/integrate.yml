@@ -12,8 +12,10 @@ on:
 
 ## DEFINE WORKFLOW
 jobs:
-  ## DEFINE JOB
-  test:
+  ## DEFINE UNIT TESTING JOB
+  unit-testing:
+    ## DEFINE JOB NAME
+    name: "Unit Testing"
 
     ## DEFINE WORKER
     runs-on: ubuntu-latest
@@ -36,7 +38,44 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 pytest xmltodict
+          pip install pytest xmltodict
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      ## PERFORM UNIT TEST WITH PYTEST
+      - name: Test with pytest
+        run: |
+          pytest
+
+  ## DEFINE LINT TEST JOB
+  linting:
+    ## DEFINE JOB NAME
+    name: "Lint Testing"
+
+    ## WAIT FOR PREVIOUS JOB
+    needs: unit-testing
+    
+    ## DEFINE WORKER
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    
+    ## DEFINE STEPS
+    steps:
+      ## CLONE REPO CODE
+      - uses: actions/checkout@v2
+
+      ## SETUP PYTHON3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      ## CONFIGURE WORKER TO PERFORM TESTS
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 xmltodict
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       ## PERFORM LINT WITH FLAKE8
@@ -47,7 +86,27 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 ./src --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-      ## PERFORM UNIT TEST WITH PYTEST
-      - name: Test with pytest
-        run: |
-          pytest
+  ## DEFINE SAST (SEMGREP) JOB
+  sast-semgrep:
+    ## DEFINE NAME
+    name: "SAST (SEMGREP)"
+
+    ## WAIT FOR PREVIOUS JOB
+    needs: linting
+    
+    ## DEFINE WORKER
+    runs-on: ubuntu-latest
+    
+    ## DEFINE STEPS
+    steps:
+      ## CLONE REPO CODE
+      - uses: actions/checkout@v2
+
+      ## PERFROM SEMGREP SCAN
+      - uses: returntocorp/semgrep-action@v1
+        with:
+          config: >- # more at semgrep.dev/explore
+            p/security-audit
+            p/secrets
+
+  ## DEFINE SAST () JOB

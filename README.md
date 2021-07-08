@@ -2,7 +2,6 @@
 <br />
 <p align="center">
   <a href="https://github.com/pkeech/stig_parser">
-    <!--<img src="images/logo.png" alt="Logo" width="80" height="80">-->
     <img src="docs/images/STIG_Parser.png" alt="Logo" />
   </a>
 
@@ -47,7 +46,7 @@ The table below briefly describes each update. For more information, view the re
 ### Documentation
 Documentation hasn't been created at this time. For the current development documentation, please visit the [repository](https://github.com/pkeech/stig_parser).
 
-### Testing 
+### Testing (Unit Testing)
 This project leverages GitHub Actions for its CI/CD workflow. During a Push to any branch, with the exception of `Master` and `Dev`, the workflow will perform Unit Testing and Linting.
 
 For manual testing, run the following commands;
@@ -59,9 +58,30 @@ docker run -it --rm -v $(PWD)/dev:/testing python /bin/bash
 ## INSTALL DEPENDENCIES
 pip install pytest
 
+## CHANGE WORKING DIRECTORY
+cd testing
+
 ## RUN PYTEST
 pytest
 ```
+
+### Testing (Functional Testing)
+To perform a functional test, run the following commands. This script will generate a `dump.json` file within the `dev` directory that can be reviewed for accuracy.
+
+``` bash
+## START PYTHON DEV CONTAINER
+docker run -it --rm -v $(PWD)/dev:/testing python /bin/bash
+
+## INSTALL DEPENDENCIES
+pip install stig-parser
+
+## CHANGE WORKING DIRECTORY
+cd testing
+
+## RUN PYTHON SCRIPT
+python3 test.py
+```
+
 
 ### Usage
 To use this package simply, import the module and run the `convert-xccdf()` function. This will result in the a JSON String object. 
