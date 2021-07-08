@@ -112,7 +112,7 @@ jobs:
           config: >- # more at semgrep.dev/explore
             p/security-audit
             p/secrets
-          path: '--lang=py ./src/'
+          args: '--lang=py ./src/'
           auditOn: push
           generateSarif: "1"
 
