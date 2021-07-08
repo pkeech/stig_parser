@@ -112,7 +112,7 @@ jobs:
           config: >- # more at semgrep.dev/explore
             p/security-audit
             p/secrets
-          auditOn: push
+          #auditOn: push
           generateSarif: "1"
 
       ## UPLOAD RESULTS TO GITHUB SECURITY TAB
