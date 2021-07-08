@@ -142,4 +142,4 @@ jobs:
       - name: "Performing Bandit Scan"
         uses: jpetrucciani/bandit-check@master
         with:
-          path: '.github/'
+          path: '--verbose -ll --skip B104 ./src/'
