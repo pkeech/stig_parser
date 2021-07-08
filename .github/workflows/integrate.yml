@@ -112,7 +112,7 @@ jobs:
           config: >- # more at semgrep.dev/explore
             p/security-audit
             p/secrets
-          #auditOn: push
+          auditOn: push
           generateSarif: "1"
 
       ## UPLOAD RESULTS TO GITHUB SECURITY TAB
@@ -122,9 +122,24 @@ jobs:
           sarif_file: semgrep.sarif
         if: always()
 
-  ## DEFINE SAST () JOB
-      ## PERFORM BANDIT SCAN
-      #- name: "BANDIT SCAN"
-      #  uses: jpetrucciani/bandit-check@master
-      #  with:
-      #    path: '.'
+  ## DEFINE SAST (BANDIT) JOB
+  sast-bandit:
+    ## DEFINE NAME
+    name: "SAST (BANDIT)"
+
+    ## WAIT FOR PREVIOUS JOB
+    needs: sast-semgrep
+    
+    ## DEFINE WORKER
+    runs-on: ubuntu-latest
+    
+    ## DEFINE STEPS
+    steps:
+      ## CLONE REPO CODE
+      - uses: actions/checkout@v2
+
+      ## RUN BANDIT SCAN
+      - name: "BANDIT SCAN"
+        uses: jpetrucciani/bandit-check@master
+        with:
+          path: '.github/'
