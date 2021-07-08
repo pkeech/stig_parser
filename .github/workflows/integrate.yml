@@ -15,7 +15,7 @@ jobs:
   ## DEFINE UNIT TESTING JOB
   unit-testing:
     ## DEFINE JOB NAME
-    name: "Unit Testing"
+    name: "Unit Testing (PyTest)"
 
     ## DEFINE WORKER
     runs-on: ubuntu-latest
@@ -112,7 +112,6 @@ jobs:
           config: >- # more at semgrep.dev/explore
             p/security-audit
             p/secrets
-          args: '--lang=py ./src/'
           auditOn: push
           generateSarif: "1"
 
@@ -139,8 +138,20 @@ jobs:
       ## CLONE REPO CODE
       - uses: actions/checkout@v2
 
+      ## INSTALL DEPENDENCIES
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit bandit-sarif-formatter
+
       ## RUN BANDIT SCAN
       - name: "Performing Bandit Scan"
         uses: jpetrucciani/bandit-check@master
         with:
-          path: '--verbose -ll --skip B104 ./src/'
+          path: '--verbose -ll --skip B104 ./src/ --format sarif --output results.sarif'
+
+      ## UPLOAD SECURITY REPORT
+      - name: "Upload Security Report"
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: results.sarif
