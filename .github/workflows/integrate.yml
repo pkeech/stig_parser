@@ -117,9 +117,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 pytest
+          pip install flake8 pytest xmltodict
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      ## PERFORM CODE COVERAGE TEST
+      #- name: "PyTest & CodeCov"
+      
       ## PERFORM CODE COVERAGE TEST
       - name: pytest
         id: pytest
@@ -137,12 +140,12 @@ jobs:
           body: ${{ steps.pytest.outputs.output-table }}
 
       ## SEND NOTIFICATION TO SLACK
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_TITLE: 'CodeCov Test Results'
-          SLACK_MESSAGE: ${{ steps.pytest.outputs.output-table }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      #- name: Slack Notification
+      #  uses: rtCamp/action-slack-notify@v2
+      #  env:
+      #    SLACK_TITLE: 'CodeCov Test Results'
+      #    SLACK_MESSAGE: ${{ steps.pytest.outputs.output-table }}
+      #    SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
   
   ## DEFINE SAST (SEMGREP) JOB
   sast-semgrep:
