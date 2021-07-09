@@ -133,7 +133,7 @@ jobs:
       - name: Commit pytest coverage table
         uses: peter-evans/commit-comment@v1
         with:
-          body: ${{ steps.pytester-cov.outputs.output-table }}
+          body: ${{ steps.pytest.outputs.output-table }}
   
   ## DEFINE SAST (SEMGREP) JOB
   sast-semgrep:
