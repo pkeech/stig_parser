@@ -28,6 +28,12 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          
+      ## DEBUG
+      - name: "Debug Print Step"
+        run: |
+          ls -al 
+          pwd
 
       ## CONFIGURE WORKER TO PUBLISH PACKAGE
       - name: "Install Dependencies"
