@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 ## QUERY GITHUB FOR TAG TO GENERATE VERSION
 new_version = (
-    subprocess.run(["git", "describe", "--tags"], cwd="/", stdout=subprocess.PIPE)
+    subprocess.run(["git", "describe", "--tags"], cwd="/src/", stdout=subprocess.PIPE)
     .stdout.decode("utf-8")
     .strip()
 )
