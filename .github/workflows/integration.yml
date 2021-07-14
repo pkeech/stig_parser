@@ -1,0 +1,257 @@
+## NAME GITHUB ACTION WORKFLOW
+name: STIG Parser Integration
+
+## RUN WORKFLOW WHEN
+on: 
+  ## PULL REQUEST TO MASTER
+  pull_request:
+    branches: [ master ]
+
+## DEFINE WORKFLOW
+jobs:
+  ## DEFINE LINT TEST JOB
+  linting:
+    ## DEFINE JOB NAME
+    name: "Lint Testing"
+
+    ## DEFINE WORKER
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    
+    ## DEFINE STEPS
+    steps:
+      ## CLONE REPO CODE
+      - uses: actions/checkout@v2
+
+      ## SETUP PYTHON3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      ## CONFIGURE WORKER TO PERFORM TESTS
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 xmltodict
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      ## PERFORM LINT WITH FLAKE8
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 ./src --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 ./src --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+  ## DEFINE UNIT TESTING JOB
+  unit-testing:
+    ## DEFINE JOB NAME
+    name: "Unit Testing"
+
+    ## WAIT FOR PREVIOUS JOB
+    needs: linting
+
+    ## DEFINE WORKER
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    
+    ## DEFINE STEPS
+    steps:
+      ## CLONE REPO CODE
+      - uses: actions/checkout@v2
+
+      ## SETUP PYTHON3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      ## CONFIGURE WORKER TO PERFORM TESTS
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest xmltodict
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      ## PERFORM UNIT TEST WITH PYTEST
+      - name: Test with pytest
+        run: |
+          pytest
+
+  ## DEFINE CODE COVERAGE JOB
+  code-cov:
+    ## DEFINE NAME:
+    name: "Code Coverage"
+
+    ## WAIT FOR PREVIOUS JOB
+    needs: unit-testing
+
+    ## DEFINE WORKER
+    runs-on: ubuntu-latest
+    
+    ## DEFINE ENVIRONMENT VARIABLES
+    env:
+      COVERAGE_SINGLE: 60   ## MINIMUM COVERAGE PERCENTAGE PER FILE
+      COVERAGE_TOTAL: 60    ## MINIMUM COVERAGE PERCENTAGE TOTAL
+
+    ## DEFINE STEPS
+    steps:
+      ## CLONE REPO CODE
+      - uses: actions/checkout@v2
+
+      ## SETUP PYTHON
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      ## INSTALL DEPENDENCIES
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest xmltodict
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      ## PERFORM CODE COVERAGE TEST
+      #- name: "PyTest & CodeCov"
+      
+      ## PERFORM CODE COVERAGE TEST
+      - name: pytest
+        id: pytest
+        uses: alexanderdamiani/pytester-cov@v1.2.0
+        with:
+          #pytest-root-dir: './src/'
+          cov-omit-list: 'test/*, dev/*, docs/*'
+          cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
+          cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
+      
+      ## ADD RESULTS TO COMMIT
+      - name: Commit pytest coverage table
+        uses: peter-evans/commit-comment@v1
+        with:
+          body: ${{ steps.pytest.outputs.output-table }}
+
+      ## SEND NOTIFICATION TO SLACK
+      #- name: Slack Notification
+      #  uses: rtCamp/action-slack-notify@v2
+      #  env:
+      #    SLACK_TITLE: 'CodeCov Test Results'
+      #    SLACK_MESSAGE: ${{ steps.pytest.outputs.output-table }}
+      #    SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  
+  ## DEFINE SAST (SEMGREP) JOB
+  sast-semgrep:
+    ## DEFINE NAME
+    name: "SAST (SEMGREP)"
+
+    ## WAIT FOR PREVIOUS JOB
+    needs: code-cov
+    
+    ## DEFINE WORKER
+    runs-on: ubuntu-latest
+    
+    ## SKIP IF PR WAS CREATED BY DEPENDABOT (PERMISSIONS ISSUE)
+    if: (github.actor != 'dependabot[bot]')
+
+    ## DEFINE STEPS
+    steps:
+      ## CLONE REPO CODE
+      - uses: actions/checkout@v2
+
+      ## PERFORM SEMGREP SCAN
+      - name: "Performing Semgrep Scan"
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >- # more at semgrep.dev/explore
+            p/security-audit
+            p/secrets
+          auditOn: push
+          generateSarif: "1"
+
+      ## UPLOAD RESULTS TO GITHUB SECURITY TAB
+      - name: Upload SARIF file for GitHub Advanced Security Dashboard
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: semgrep.sarif
+        if: always()
+
+  ## DEFINE SAST (BANDIT) JOB
+  sast-bandit:
+    ## DEFINE NAME
+    name: "SAST (BANDIT)"
+
+    ## WAIT FOR PREVIOUS JOB
+    needs: code-cov
+    
+    ## DEFINE WORKER
+    runs-on: ubuntu-latest
+    
+    ## DEFINE STEPS
+    steps:
+      ## CLONE REPO CODE
+      - uses: actions/checkout@v2
+
+      ## INSTALL DEPENDENCIES
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit bandit-sarif-formatter
+
+      ## RUN BANDIT SCAN
+      - name: "Performing Bandit Scan"
+        run: |
+          bandit -r ./src/ --verbose -ll --skip B104 --format sarif --output results.sarif
+
+      ## UPLOAD SECURITY REPORT
+      - name: "Upload Security Report"
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: results.sarif
+
+  ## DEFINE BUILD JOB
+  #build-publish:
+    ## DEFINE NAME
+    #name: "Build & Publish"
+
+    ## WAIT FOR SAST JOBS
+    #needs: [ "sast-bandit", "sast-semgrep" ]
+
+    ## DEFINE WORKER
+    #runs-on: ubuntu-latest
+
+    ## DEFINE STEPS
+    #steps:
+      ## CLONE REPO CODE
+      #- uses: actions/checkout@v2
+
+      ## SETUP PYTHON3
+      #- uses: actions/setup-python@v2
+      #  with:
+      #    python-version: 3.8
+
+      ## CONFIGURE WORKER TO PUBLISH PACKAGE
+      #- name: "Install Dependencies"
+      #  run: |
+      #    # Upgrade pip
+      #    python3 -m pip install --upgrade pip
+          # Install Dependencies
+      #    python3 -m pip install --upgrade build xmltodict
+
+      ## BUILD PACKAGE
+      #- name: "Build Python Package"
+      #  run: |
+      #    # Build Python Package
+      #    python3 -m build
+
+      ## PUBLISH PACKAGE TO TESTPYPI
+      #- name: "Publish Package to Test PyPi"
+        #if: github.repository == 'pkeech/stig_parser' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+      #  uses: pypa/gh-action-pypi-publish@master
+      #  with:
+      #    password: ${{ secrets.TEST_PYPI_TOKEN }}
+      #    repository_url: https://test.pypi.org/legacy/

@@ -1,0 +1,6 @@
+## SEMGREP IGNORE FILE
+
+## IGNORE DIRECTORIES
+dev/
+docs/
+tests/
