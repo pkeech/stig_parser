@@ -19,7 +19,6 @@
 ![GitHub last commit][commit-shield]
 [![PyPi][pypi-shield]][pypi-url]
 [![GitHub Workflow Status][workflow-shield]][workflow-url]
-[![GitHub Workflow Status (Test)][workflow-test-shield]][workflow-test-url]
 [![GitHub Open Issues][issues-shield]][issues-url]
 [![GitHub Open PRs][pr-shield]][pr-url]
 ![Python Versions][python-version-shield]
@@ -156,10 +155,10 @@ If you have any comments, concerns and/or gripes, please feel free to submit an 
 [commit-shield]: https://img.shields.io/github/last-commit/pkeech/stig_parser?style=for-the-badge
 [pypi-shield]: https://img.shields.io/pypi/v/stig-parser?style=for-the-badge
 [pypi-url]: https://pypi.org/project/stig-parser/
-[workflow-shield]: https://img.shields.io/github/workflow/status/pkeech/stig_parser/STIG%20Parser%20CI/CD?style=for-the-badge
+[workflow-shield]: https://img.shields.io/github/workflow/status/pkeech/stig_parser/integration?style=for-the-badge
 [workflow-url]: https://github.com/pkeech/stig_parser/actions
-[workflow-test-shield]: https://img.shields.io/github/workflow/status/pkeech/stig_parser/STIG%20Parser%20CI/CD%20(Dev)?label=BUILD%20%28DEV%29&style=for-the-badge
-[workflow-test-url]: https://github.com/pkeech/stig_parser/actions
+<!-- [workflow-test-shield]: https://img.shields.io/github/workflow/status/pkeech/stig_parser/integration-dev?label=BUILD%20%28DEV%29&style=for-the-badge -->
+<!-- [workflow-test-url]: https://github.com/pkeech/stig_parser/actions -->
 [issues-shield]: https://img.shields.io/github/issues/pkeech/stig_parser?style=for-the-badge
 [issues-url]: https://github.com/pkeech/stig_parser/issues
 [pr-shield]: https://img.shields.io/github/issues-pr/pkeech/stig_parser?style=for-the-badge
