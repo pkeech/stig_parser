@@ -123,7 +123,7 @@ jobs:
         uses: alexanderdamiani/pytester-cov@v1.2.0
         with:
           #pytest-root-dir: './src/'
-          cov-omit-list: 'test/*, dev/*, docs/*'
+          cov-omit-list: 'test/*, dev/*, docs/*, src/version.py'
           cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
           cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
       

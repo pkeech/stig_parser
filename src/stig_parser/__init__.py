@@ -4,57 +4,59 @@
 
 ##  Created By  : Peter Keech
 ##  Email       : peter.a.keech@gmail.com
-##  Version     : 1.0.2
-##  Description : STIG-Parser v1.0.2 Module
-##  Requirements: xmltodict
-##  Build       : docker run -it --rm -v $(PWD):/stig-parser python /bin/bash
-##                cd stig-parser
-##                python3 -m pip install --upgrade build
-##                python3 -m build
-##                
+##  Version     : 1.1.0
+##  Description : STIG-Parser 1.1.0 Module
+##  Requirements: xmltodict              
 
 ## IMPORT REQUIRED EXTERNAL MODULES
-import os, xmltodict, json
+import os, xmltodict, zipfile, json
+
+## IMPORT HELPER FUNCTIONS
+import helpers as helper
+
+##  ---------------------
+##  ----- FUNCTIONS -----
+##  ---------------------
 
 ## FUNCTION: CONVERT RAW XCCDF (XML) TO JSON
-def convert_xccdf(raw):
+def convert_xccdf(RAW):
     
     ## CONVERT XML TO PYTHON DICTIONARY
-    content_dict = xmltodict.parse(raw, dict_constructor=dict)
+    CONTENT_DICT = xmltodict.parse(RAW, dict_constructor=dict)
 
     ## HANDLE NEW VS. OLD VERSION OF STIG SCHEMA (ISSUE #3)
-    if isinstance(content_dict['Benchmark']['plain-text'], list):
+    if isinstance(CONTENT_DICT['Benchmark']['plain-text'], list):
         ## NEW VERSION
-        raw_version = content_dict['Benchmark']['plain-text'][0]['#text']
+        RAW_VERSION = CONTENT_DICT['Benchmark']['plain-text'][0]['#text']
     else:
         ## OLD VERSION
-        raw_version = content_dict['Benchmark']['plain-text']['#text']        
+        RAW_VERSION = CONTENT_DICT['Benchmark']['plain-text']['#text']        
 
     ## SAVE RELEASE INFO
-    release_info = raw_version
+    RELEASE_INFO = RAW_VERSION
 
     ## FORMAT RELEASE INFO FOR SPECIFIC DATA FIELDS
-    raw_version = raw_version.split('Benchmark Date: ')
-    BENCH_DATE = raw_version[1]
-    REL = raw_version[0].replace('Release: ','')
+    RAW_VERSION = RAW_VERSION.split('Benchmark Date: ')
+    BENCH_DATE = RAW_VERSION[1]
+    REL = RAW_VERSION[0].replace('Release: ','')
 
     ## CREATE RETURNED JSON STRUCTURE
-    json_results = {
-        "title": content_dict['Benchmark']['title'],
-        "description": content_dict['Benchmark']['description'],
-        "version": content_dict['Benchmark']['version'],
+    JSON_RESULTS = {
+        "title": CONTENT_DICT['Benchmark']['title'],
+        "description": CONTENT_DICT['Benchmark']['description'],
+        "version": CONTENT_DICT['Benchmark']['version'],
         "release": REL,
         "benchmark_date": BENCH_DATE,
-        "release_info": release_info,
-        "source": content_dict['Benchmark']['reference']['dc:source'],
-        "notice": content_dict['Benchmark']['notice']['@id']
+        "release_info": RELEASE_INFO,
+        "source": CONTENT_DICT['Benchmark']['reference']['dc:source'],
+        "notice": CONTENT_DICT['Benchmark']['notice']['@id']
     }
 
     ## GENERATE EMPTY ARRAY
     STIGS = []
 
     ## LOOP THROUGH STIGS
-    for STIG in content_dict['Benchmark']['Group']:
+    for STIG in CONTENT_DICT['Benchmark']['Group']:
 
         ## PARSE IDENT 
         IDENT = STIG['Rule']['ident']
@@ -67,8 +69,8 @@ def convert_xccdf(raw):
             RESULTS = ""
         
             ## LOOP THROUGH ALL CCI NUMBERS
-            for result in IDENT:
-                RESULTS += result['#text'] + ","
+            for RESULT in IDENT:
+                RESULTS += RESULT['#text'] + ","
 
             ## REMOVE LAST ','
             IDENT = RESULTS.rstrip(RESULTS[-1])
@@ -91,7 +93,63 @@ def convert_xccdf(raw):
         STIGS.append(oSTIG)
 
     ## ADD STIGS TO JSON OBJECT
-    json_results['rules'] = STIGS
+    JSON_RESULTS['rules'] = STIGS
 
     ## RETURN RESULTS
-    return json_results
+    return JSON_RESULTS
+
+## FUNCTION: EXTRACT STIG FROM ZIP FILE
+def extract_stig(FILENAME):
+    ## OPEN XML FILE FROM ZIP FILE AND OBTAIN LIST OF FILES
+    ZIP = zipfile.ZipFile(FILENAME)
+    FILES = ZIP.namelist()
+
+    ## FIND MANUAL STIG FILE
+    for FILE in FILES:
+        if FILE.endswith('_Manual-xccdf.xml'):
+            ## HANDLE MACOS
+            if not FILE.startswith('__MACOS'):
+                ## DETERMINE FILE NAME
+                STIG_FILENAME = FILE
+                break
+
+    ## ENSURE FILE IS FOUND
+    assert STIG_FILENAME is not None, 'Manual STIG File was NOT FOUND'
+
+    ## READ STIG FILE
+    RAW_FILE = ZIP.read(STIG_FILENAME) 
+
+    ## RETURN RAW STIG
+    return RAW_FILE
+
+## FUNCTION: CONVERT STIG (ZIP) TO JSON FILE
+def convert_stig(FILENAME):
+    ## EXTRACT STIG FROM ZIP FILE
+    RAW_STIG = extract_stig(FILENAME)
+    
+    ## CONVERT TO JSON
+    RESULTS = convert_xccdf(RAW_STIG)
+
+    ## RETURN JSON STIG
+    return RESULTS
+
+## FUNCTION: GENERATE BLANK CHECKLIST (CKL)
+def generate_ckl(FILENAME, CHECKLIST_INFO):
+    ## EXTRACT STIG FROM ZIP FILE
+    RAW_STIG = extract_stig(FILENAME)
+    
+    ## CONVERT TO JSON
+    JSON_STIG = convert_xccdf(RAW_STIG)
+
+    ## CREATE XML DOCUMENT
+
+    ## LINE 57 -------------------->
+    ## LINE 57 -------------------->
+    ## LINE 57 -------------------->
+    ## LINE 57 -------------------->
+
+
+
+
+    ## RETURN CHECKLIST
+    return None

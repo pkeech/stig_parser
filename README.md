@@ -52,16 +52,19 @@ For manual testing, run the following commands;
 
 ``` bash
 ## START PYTHON DEV CONTAINER
-docker run -it --rm -v $(PWD)/dev:/testing python /bin/bash
+docker run -it --rm -v $(PWD):/stig-parser python /bin/bash
 
 ## INSTALL DEPENDENCIES
-pip install pytest
+pip install pytest pytest-cov xmltodict
 
 ## CHANGE WORKING DIRECTORY
-cd testing
+cd stig-parser
 
 ## RUN PYTEST
-pytest
+pytest -v
+
+## RUN PYTEST COVERAGE
+pytest --cov src
 ```
 
 ### Testing (Functional Testing)

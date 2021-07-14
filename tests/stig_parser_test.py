@@ -15,7 +15,7 @@
 import zipfile, os, pytest
 
 ## IMPORT STIG-PARSER
-from src.stig_parser import convert_xccdf
+import src.stig_parser as stig_parser
 
 ##  ----------------------------------------
 ##  ---- STATICALLY SET TEST VARIABLES -----
@@ -24,17 +24,22 @@ from src.stig_parser import convert_xccdf
 ## STIG FILENAME
 FILENAME = "tests/resources/U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_STIG.zip"
 
+## CHECKLIST METADATA
+CHECKLIST_INFO = {}
+ 
 ##  -----------------------
 ##  ---- PYTEST TESTS -----
 ##  -----------------------
 
 ## TEST: ENSURE STIG FILE EXISTS
+## REQUIRES: N/A
 def test_requirements() -> None:
     ## CHECK FILE EXISTS
     assert os.path.isfile(FILENAME), 'File does not exist: %s' % FILENAME
 
 ## TEST: ATTEMPT TO PARSE STIG FILE
-def test_parse_stig() -> None:
+## REQUIRES: STIG (XML)
+def test_convert_xccdf() -> None:
     ## OPEN XML FILE FROM ZIP FILE AND OBTAIN LIST OF FILES
     z = zipfile.ZipFile(FILENAME)
     files = z.namelist()
@@ -58,7 +63,7 @@ def test_parse_stig() -> None:
     assert RAW_FILE is not None, 'Unable to Read STIG File (%s)' % STIG_FILENAME
 
     ## CONVERT RAW STIG TO JSON OBJECT
-    STIG_JSON = convert_xccdf(RAW_FILE)
+    STIG_JSON = stig_parser.convert_xccdf(RAW_FILE)
 
     ## ENSURE STIG WAS PARSED
     assert STIG_JSON is not None, 'Unable to Parse STIG File (%s)' % STIG_FILENAME
@@ -73,3 +78,43 @@ def test_parse_stig() -> None:
     assert STIG_JSON['rules'][0]['cci'] == "CCI-000054"    ## FIRST RULE CCI NUMBER
     assert STIG_JSON['rules'][0]['stig_id'] == "DKER-EE-001000"     ## FIRST RULE STIG ID
     assert STIG_JSON['rules'][0]['rule_id'] == "SV-104693r1_rule"   ## FIRST RULE ID
+
+## TEST: ATTEMPT TO PARSE STIG FILE W/O EXTRACTING FILE
+## REQUIRES: STIG (ZIP)
+def test_convert_stig() -> None:
+    ## CONVERT STIG TO JSON OBJECT
+    STIG_JSON = stig_parser.convert_stig(FILENAME)
+
+    ## ENSURE STIG WAS PARSED
+    assert STIG_JSON is not None, 'Unable to Parse STIG File (%s)' % FILENAME
+
+    ## VALIDATE KNOWN ENTRIES
+    assert STIG_JSON['title'] == "Docker Enterprise 2.x Linux/UNIX Security Technical Implementation Guide", "STIG Title Parsed Incorrectly"    ## STIG TITLE
+    assert STIG_JSON['benchmark_date'] == "19 Jul 2019"     ## BENCHMARK DATE
+    assert STIG_JSON['rules'][0]['id'] == "V-94863"     ## FIRST RULE ID
+    assert STIG_JSON['release_info'] == "Release: 1 Benchmark Date: 19 Jul 2019"    ## RELEASE INFO
+    assert STIG_JSON['source'] == "STIG.DOD.MIL"    ## SOURCE
+    assert STIG_JSON['notice'] == "terms-of-use"    ## NOTICE
+    assert STIG_JSON['rules'][0]['cci'] == "CCI-000054"    ## FIRST RULE CCI NUMBER
+    assert STIG_JSON['rules'][0]['stig_id'] == "DKER-EE-001000"     ## FIRST RULE STIG ID
+    assert STIG_JSON['rules'][0]['rule_id'] == "SV-104693r1_rule"   ## FIRST RULE ID
+
+## TEST: EXTRACT STIG FROM ZIP
+## REQUIRES: STIG (ZIP)
+def test_extract_stig() -> None:
+    ## CONVERT STIG TO JSON OBJECT
+    STIG_JSON = stig_parser.convert_stig(FILENAME)
+
+    ## ENSURE STIG WAS PARSED
+    assert STIG_JSON is not None, 'Unable to Parse STIG File (%s)' % FILENAME
+
+## TEST: ATTEMPT TO GENERATE A BLANK CHECKLIST (CKL) FILE
+## REQUIRES: STIG (ZIP), CHECKLIST INFO (JSON)
+#def test_generate_ckl() -> None:
+    ## ATTEMPT TO GENERATE CKL
+    #CKL = stig_parser.generate_ckl(FILENAME, CHECKLIST_INFO)
+
+    ## VALIDATE RESPONSE RETURNED
+    #assert CKL is not None, 'Unable to generate CKL based upon the passed STIG File (%s)' % FILENAME
+
+    ## VALIDATE CKL FIELDS
