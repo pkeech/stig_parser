@@ -7,13 +7,14 @@ with open("README.md", "r") as fh:
 
 ## QUERY GITHUB FOR TAG TO GENERATE VERSION
 new_version = (
-    subprocess.run(["git", "describe", "--tags"], stdout=subprocess.PIPE)
+    subprocess.run(["git", "describe", "--tags"], cwd="/", stdout=subprocess.PIPE)
     .stdout.decode("utf-8")
     .strip()
 )
 
 ## DEFINE PACKAGE VERSION
 assert "." in new_version
+
 assert os.path.isfile("src/stig_parser/version.py")
 with open("src/stig_parser/VERSION", "w", encoding="utf-8") as fh:
     fh.write(f"{new_version}\n")
