@@ -14,7 +14,6 @@ new_version = (
 
 ## DEFINE PACKAGE VERSION
 assert "." in new_version
-
 assert os.path.isfile("src/stig_parser/version.py")
 with open("src/stig_parser/VERSION", "w", encoding="utf-8") as fh:
     fh.write(f"{new_version}\n")
