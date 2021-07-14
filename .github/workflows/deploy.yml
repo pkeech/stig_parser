@@ -15,7 +15,7 @@ jobs:
     name: "Build & Publish"
 
     ## DEFINE WORKER
-    #runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     ## DEFINE STEPS
     steps:
@@ -28,6 +28,13 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          
+      ## DEBUG
+      - name: "Debug Print Step"
+        run: |
+          ls -al 
+          pwd
+          ls -al /
 
       ## CONFIGURE WORKER TO PUBLISH PACKAGE
       - name: "Install Dependencies"
@@ -35,7 +42,7 @@ jobs:
           # Upgrade pip
           python3 -m pip install --upgrade pip
           # Install Dependencies
-          python3 -m pip install --upgrade build xmltodict
+          python3 -m pip install --upgrade build xmltodict git
 
       ## BUILD PACKAGE
       - name: "Build Python Package"
