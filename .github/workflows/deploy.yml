@@ -1,0 +1,42 @@
+## NAME GITHUB ACTION WORKFLOW
+name: Build & Deploy PyPi Package
+
+## RUN WORKFLOW WHEN
+on:
+  ## CREATION OF NEW RELEASE
+  release:
+    types: [published]
+
+## DEFINE WORKFLOW
+jobs:
+  ## DEFINE BUILD JOB
+  build-publish:
+    ## DEFINE NAME
+    name: "Build & Publish"
+
+    ## DEFINE WORKER
+    runs-on: ubuntu-latest
+
+    ## DEFINE STEPS
+    steps:
+      ## CLONE REPO CODE
+      - uses: actions/checkout@v2
+
+      ## SETUP PYTHON3
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      ## CONFIGURE WORKER TO PUBLISH PACKAGE
+      - name: "Install Dependencies"
+        run: |
+          # Upgrade pip
+          python3 -m pip install --upgrade pip
+          # Install Dependencies
+          python3 -m pip install --upgrade build xmltodict
+
+      ## BUILD PACKAGE
+      - name: "Build Python Package"
+        run: |
+          # Build Python Package
+          python3 -m build
