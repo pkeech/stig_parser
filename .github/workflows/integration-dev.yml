@@ -218,8 +218,8 @@ jobs:
     ## DEFINE NAME
     name: "Build & Publish"
 
-    ## WAIT FOR TEST JOB
-    needs: sast-bandit
+    ## WAIT FOR SAST JOBS
+    needs: [ "sast-bandit", "sast-semgrep" ]
 
     ## DEFINE WORKER
     runs-on: ubuntu-latest
