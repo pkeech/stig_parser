@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/pkeech/stig_parser">
-    <img src="docs/images/STIG_Parser.png" alt="Logo" />
+    <img src="https://github.com/pkeech/stig_parser/blob/master/docs/images/STIG_Parser.png" alt="Logo" />
   </a>
 
   <p align="center">
