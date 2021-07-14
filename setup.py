@@ -31,7 +31,6 @@ setuptools.setup(
     url="https://github.com/pkeech/stig_parser",
     packages=setuptools.find_packages('src'),
     package_dir={'': 'src'},
-    package_data={"src": ["VERSION"]},
     install_requires=[
         'xmltodict'
     ],
