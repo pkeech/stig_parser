@@ -1,11 +1,27 @@
-import setuptools
+## IMPORT REQUIRED DOCUMENTS
+import setuptools, subprocess, os
 
+## PARSE README TO LONG DESCRIPTION
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+## QUERY GITHUB FOR TAG TO GENERATE VERSION
+new_version = (
+    subprocess.run(["git", "describe", "--tags"], stdout=subprocess.PIPE)
+    .stdout.decode("utf-8")
+    .strip()
+)
+
+## DEFINE PACKAGE VERSION
+assert "." in new_version
+assert os.path.isfile("cf_remote/version.py")
+with open("cf_remote/VERSION", "w", encoding="utf-8") as fh:
+    fh.write(f"{new_version}\n")
+
+## DEFINE PACKAGE
 setuptools.setup(
     name='stig_parser',  
-    version='1.0.3-rc2',
+    version=new_version,
     license='MIT',
     author="Peter Keech",
     author_email="peter.a.keech@gmail.com",
