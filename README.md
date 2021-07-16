@@ -16,16 +16,14 @@
 </p>
 
 <!-- PROJECT SHIELDS -->
-<p align="center">
-  ![GitHub last commit][commit-shield]
-  [![PyPi][pypi-shield]][pypi-url]
-  [![GitHub Workflow Status][workflow-shield]][workflow-url]
-  [![GitHub Open Issues][issues-shield]][issues-url]
-  [![GitHub Open PRs][pr-shield]][pr-url]
-  ![Python Versions][python-version-shield]
-  [![GitHub License][license-shield]][license-url]
-  [![LinkedIN Profile][linkedin-shield]][linkedin-url]
-</p>
+![GitHub last commit][commit-shield]
+[![PyPi][pypi-shield]][pypi-url]
+[![GitHub Workflow Status][workflow-shield]][workflow-url]
+[![GitHub Open Issues][issues-shield]][issues-url]
+[![GitHub Open PRs][pr-shield]][pr-url]
+![Python Versions][python-version-shield]
+[![GitHub License][license-shield]][license-url]
+[![LinkedIN Profile][linkedin-shield]][linkedin-url]
 
 ### About
 A basic Python package to parse DISA STIG (XCCDF) Files into a readable JSON format.
