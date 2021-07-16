@@ -11,7 +11,7 @@
 
 ## IMPORT REQUIREMENTS
 import zipfile, json
-from stig_parser import convert_xccdf
+#from src.stig_parser import convert_xccdf
 #from checklist import create_checklist
 
 ## DEBUG: STATIC VARIABLES FOR TESTING PURPOSES
