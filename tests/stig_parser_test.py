@@ -204,4 +204,4 @@ def test_generate_ckl_file() -> None:
     assert CHECKLIST['CHECKLIST']['ASSET']['ROLE'] == "None", "Unable to read CKL File (%s)" % EXPORT_PATH_CKL
 
     ## DELETE TEST FILES
-    #os.remove(EXPORT_PATH_CKL)
+    os.remove(EXPORT_PATH_CKL)
