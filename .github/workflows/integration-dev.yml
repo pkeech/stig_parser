@@ -89,7 +89,7 @@ jobs:
     name: "Code Coverage"
 
     ## WAIT FOR PREVIOUS JOB
-    needs: unit-testing
+    needs: testing
 
     ## DEFINE WORKER
     runs-on: ubuntu-latest
