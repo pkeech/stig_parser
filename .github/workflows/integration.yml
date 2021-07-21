@@ -81,7 +81,7 @@ jobs:
       ## PERFORM UNIT TEST WITH PYTEST
       - name: Test with pytest
         run: |
-          pytest
+          pytest -v
 
   ## DEFINE CODE COVERAGE JOB
   code-cov:
