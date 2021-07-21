@@ -25,8 +25,10 @@
 [![GitHub License][license-shield]][license-url]
 [![LinkedIN Profile][linkedin-shield]][linkedin-url]
 
+> **NOTE**: As of version 1.1.0, the JSON output fields have been renamed and CamelCased. This was an effort to standardize the variables being used. When using Versions less than 1.1.0, please ensure you update your field names prior to updating. 
+
 ### About
-A basic Python package to parse DISA STIG (XCCDF) Files into a readable JSON format.
+A basic Python package to parse DISA STIGs (XCCDF) into a readable JSON format. 
 
 ### Installation
 To install stig-parser, simple run the following command:
@@ -41,11 +43,12 @@ The table below briefly describes each update. For more information, view the re
 | 1.0.0 | Initial Creation of **stig-parser** |
 | 1.0.1 | Updated to handle change to STIG schema ([Issue #3](https://github.com/pkeech/stig_parser/issues/3)) |
 | 1.0.2 | Added Additional Fields to Output JSON. View Release Notes for Full Details ([Issue #9](https://github.com/pkeech/stig_parser/issues/9))|
+| 1.1.0 | Added Additional Fields to Output JSON, Included BETA release of CKL creation and added the ability to parse a STIG directly from the ZIP file. View Release Notes for Full Details ([Issue #6](https://github.com/pkeech/stig_parser/issues/6))|
 
 ### Documentation
 Documentation hasn't been created at this time. For the current development documentation, please visit the [repository](https://github.com/pkeech/stig_parser).
 
-### Testing (Unit Testing)
+### Testing
 This project leverages GitHub Actions for its CI/CD workflow. During a Push to any branch, with the exception of `Master` and `Dev`, the workflow will perform Unit Testing and Linting.
 
 For manual testing, run the following commands;
@@ -67,26 +70,52 @@ pytest -v
 pytest --cov src
 ```
 
-### Testing (Functional Testing)
-To perform a functional test, run the following commands. This script will generate a `dump.json` file within the `dev` directory that can be reviewed for accuracy.
+### Usage
+This module contains the following functions;
 
-``` bash
-## START PYTHON DEV CONTAINER
-docker run -it --rm -v $(PWD)/dev:/testing python /bin/bash
+| Function | Description | Parameters |
+| --- | --- | --- |
+| `convert_stig(STIG_FILE)` | This function will extract the STIG from a ZIP archive, and parse the results into a JSON object | `STIG_FILE` == Path to STIG ZIP File |
+| `convert_xccdf(STIG_XML)` | This function will parse a raw bytes of a STIG file (XML) and return a JSON object| `STIG_XML` == Bytes object of STIG xccdf.xml File |
+| `generate_stig_json(STIG_JSON, EXPORT_PATH)` | This function will write the STIG JSON object to a File | `STIG_JSON` == JSON Object of STIG, `EXPORT_PATH` == Path to create JSON File |
+| `generate_ckl(STIGFILE, CHECKLIST_INFO)` | This function will generate an XML Object of a CKL based upon a passed STIG | `STIG_FILE` == Path to STIG ZIP File , `CHECKLIST_INFO` == JSON Object of additional information needed (see below) |
+| `generate_ckl_file(CKL, EXPORT_PATH)` | This function will write the CKL XML Object to a File | `CKL` == XML Object of CKL , `EXPORT_PATH` == Path to create CKL File |
 
-## INSTALL DEPENDENCIES
-pip install stig-parser
+When creating a Checklist (CKL), additional information is required. This information is added to the CKL but is required to be defined prior to creation. For an example of usage, please see the examples below.
 
-## CHANGE WORKING DIRECTORY
-cd testing
-
-## RUN PYTHON SCRIPT
-python3 test.py
+``` json
+{
+  "ROLE": "None",
+  "ASSET_TYPE": "Computing",
+  "HOST_NAME": "Test_Host",
+  "HOST_IP": "1.2.3.4",
+  "HOST_MAC": "",
+  "HOST_FQDN": "test.hostname.dev",
+  "TARGET_COMMENT": "",
+  "TECH_AREA": "",
+  "TARGET_KEY": "3425",
+  "WEB_OR_DATABASE": "false",
+  "WEB_DB_SITE": "",
+  "WEB_DB_INSTANCE": ""
+}
 ```
 
+### Examples
+This module has several use cases that will either generate a JSON object of a STIG file, or an XML object of a CKL file.
 
-### Usage
-To use this package simply, import the module and run the `convert-xccdf()` function. This will result in the a JSON String object. 
+#### STIGs
+To convert a STIG file to a JSON object, you can utilize the following example.
+
+``` python
+## LOAD PYTHON MODULE
+from stig_parser import convert_stig
+
+## PARSE STIG ZIP FILE
+## ASSUMES ZIP FILE IS IN CURRENT WORKING DIRECTORY
+json_results = convert_stig('./U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_STIG.zip')
+```
+
+Additionally, this example demonstrates how to generate the STIG JSON object from an **xccdf** file.
 
 ``` python
 ## LOAD PYTHON MODULE
@@ -95,51 +124,92 @@ from stig_parser import convert_xccdf
 ## LOAD XML FILE (OPTIONAL)
 import os
 
-with open("example.xml", "r") as fh:
+with open("U_Docker_Enterprise_2-x_Linux-UNIX_STIG_V1R1_Manual-xccdf.xml", "r") as fh:
     raw_file = fh.read()
 
 ## PARSE XCCDF(XML) to JSON
 json_results = convert_xccdf(raw_file)
-
 ```
+
+#### Checklists (CKL)
+To generate a CKL from a given STIG, you can utilize the following example;
+
+``` python
+## LOAD PYTHON MODULE
+from stig_parser import generate_ckl, generate_ckl_file
+
+## DEFINE STIG FILE LOCATION
+## ASSUMES ZIP FILE IS IN CURRENT WORKING DIRECTORY
+STIG = './U_Docker_Enterprise_2-x_Linux-UNIX_V1R1_STIG.zip'
+
+## DEFINE EXPORT LOCATION
+EXPORT = './ myCKL.ckl'
+
+## DEFINE ADDITIONAL CHECKLIST INFORMATION
+CHECKLIST_INFO ={
+  "ROLE": "None",
+  "ASSET_TYPE": "Computing",
+  "HOST_NAME": "Test_Host",
+  "HOST_IP": "1.2.3.4",
+  "HOST_MAC": "",
+  "HOST_FQDN": "test.hostname.dev",
+  "TARGET_COMMENT": "",
+  "TECH_AREA": "",
+  "TARGET_KEY": "3425",
+  "WEB_OR_DATABASE": "false",
+  "WEB_DB_SITE": "",
+  "WEB_DB_INSTANCE": ""
+}
+
+
+## GENERATE CKL XML OBJECT
+RAW_CKL = generate_ckl(STIG, CHECKLIST_INFO)
+
+## SAVE CHECKLIST TO FILE
+generate_ckl_file(RAW_CKL, EXPORT)
+```
+
 
 ### Output
 Outlined below is the expected JSON output:
 
 ``` json
 {
-    "title": "xxxxxxx",
-    "description": "xxxxxxx",
-    "version": "x",
-    "release": "x ",
-    "benchmark_date": "xxxxxxx",
-    "release_info": "xxxxxxx",
-    "source": "xxxxxxx",
-    "notice": "xxxxxxx",
-    "rules": [
-        {
-            "id": "xxxxxxx",
-            "stig_id": "xxxxxxx",
-            "severity": "xxxxxxx",
-            "title": "xxxxxxx",
-            "description": "xxxxxxx",
-            "fixtext": "xxxxxxx",
-            "check": "xxxxxxx",
-            "cci": "xxxxxxx",
-            "rule_id": "xxxxxxx"
-        },
-        {
-            "id": "xxxxxxx",
-            "stig_id": "xxxxxxx",
-            "severity": "xxxxxxx",
-            "title": "xxxxxxx",
-            "description": "xxxxxxx",
-            "fixtext": "xxxxxxx",
-            "check": "xxxxxxx",
-            "cci": "xxxxxxx",
-            "rule_id": "xxxxxxx"
-        }
-    ]
+  "Title": "xxxxxxx",
+  "Description": "xxxxxxx",
+  "Version": "x",
+  "Release": "x ",
+  "BenchmarkDate": "xxxxxxx",
+  "ReleaseInfo": "xxxxxxx",
+  "Source": "xxxxxxx",
+  "Notice": "xxxxxxx",
+  "Rules": [
+    {
+      "VulnID": "xxxxxxx",
+      "RuleID": "xxxxxxx",
+      "StigID": "xxxxxxx",
+      "Severity": "high | medium | low",
+      "Cat": "CAT I | CAT II | CAT III",
+      "Classification": "",
+      "GroupTitle": "xxxxxxx",
+      "RuleTitle": "xxxxxxx",
+      "Description": "xxxxxxx",
+      "VulnDiscussion": "xxxxxxx",
+      "FalsePositives": "xxxxxxx",
+      "FalseNegatives": "xxxxxxx",
+      "Documentable": "xxxxxxx",
+      "Mitigations": "xxxxxxx",
+      "SeverityOverrideGuidance": "xxxxxxx",
+      "PotentialImpacts": "xxxxxxx",
+      "ThirdPartyTools": "xxxxxxx",
+      "MitigationControl": "xxxxxxx",
+      "Responsibility": "xxxxxxx",
+      "IAControls": "xxxxxxx",
+      "CheckText": "xxxxxxx",
+      "FixText": "xxxxxxx",
+      "CCI": "xxxxxxx"
+    }
+  ]
 }
 ```
 
