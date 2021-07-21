@@ -16,7 +16,6 @@ import zipfile, os, json, xmltodict, pytest
 
 ## IMPORT STIG-PARSER
 import src.stig_parser as stig_parser
-import src.stig_parser.helpers as helper
 
 ##  ----------------------------------------
 ##  ---- STATICALLY SET TEST VARIABLES -----
@@ -44,7 +43,19 @@ CHECKLIST_INFO ={
     "WEB_DB_SITE": "",
     "WEB_DB_INSTANCE": ""
 }
- 
+
+##  -----------------------------
+##  ----- PRIVATE FUNCTIONS -----
+##  -----------------------------
+
+## FUNCTION: CONVERT CHECKLIST (XML) TO DICTIONARY
+def convert_ckl_to_dict(RAW_CKL):
+    ## CONVERT XML TO PYTHON DICTIONARY
+    CHECKLIST_DICT = xmltodict.parse(RAW_CKL, dict_constructor=dict)
+
+    ## RETURN DICTIONARY
+    return CHECKLIST_DICT
+
 ##  -----------------
 ##  ----- TESTS -----
 ##  -----------------
@@ -149,7 +160,6 @@ def test_generate_stig_json() -> None:
     ## DELETE TEST FILES
     os.remove(EXPORT_PATH_JSON)
 
-
 ## TEST: ATTEMPT TO GENERATE A BLANK CHECKLIST (CKL) FILE
 ## REQUIRES: STIG (ZIP), CHECKLIST INFO (JSON)
 def test_generate_ckl() -> None:
@@ -160,7 +170,7 @@ def test_generate_ckl() -> None:
     assert CKL is not None, 'Unable to generate CKL based upon the passed STIG File (%s)' % FILENAME
 
     ## CONVERT CHECKLIST (CKL) TO DICTIONARY
-    CHECKLIST_DICT = helper.convert_ckl_to_dict(CKL)
+    CHECKLIST_DICT = convert_ckl_to_dict(CKL)
 
     ## VALIDATE CKL FIELDS (ASSET INFO)
     ASSET = CHECKLIST_DICT['CHECKLIST']['ASSET']
@@ -170,7 +180,6 @@ def test_generate_ckl() -> None:
     STIG = CHECKLIST_DICT['CHECKLIST']['STIGS']['iSTIG']['STIG_INFO']['SI_DATA']
     assert STIG[0]['SID_DATA'] == "1", 'STIG Version is Incorrect. %s (From Function) =/= 1' % STIG[0]['SID_DATA']                                                                      ## STIG VERSION FIELD
     assert STIG[3]['SID_DATA'] == "Docker_Enterprise_2-x_Linux-UNIX", 'STIG ID is Incorrect. %s (From Function) =/= Docker_Enterprise_2-x_Linux-UNIX_STIG' % STIG[3]['SID_DATA']   ## STIG ID
-
 
 ## TEST: GENERATE CKL FILE
 ## REQUIRES: CHECKLIST XML, OUTPUT FILENAME
@@ -195,4 +204,4 @@ def test_generate_ckl_file() -> None:
     assert CHECKLIST['CHECKLIST']['ASSET']['ROLE'] == "None", "Unable to read CKL File (%s)" % EXPORT_PATH_CKL
 
     ## DELETE TEST FILES
-    os.remove(EXPORT_PATH_CKL)
+    #os.remove(EXPORT_PATH_CKL)
