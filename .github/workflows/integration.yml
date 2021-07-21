@@ -12,13 +12,13 @@ jobs:
   ## DEFINE LINT TEST JOB
   linting:
     ## DEFINE JOB NAME
-    name: "Lint Testing"
+    name: "LINTING"
 
     ## DEFINE WORKER
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.8, 3.9]
     
     ## DEFINE STEPS
     steps:
@@ -31,11 +31,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      ## CONFIGURE WORKER TO PERFORM TESTS
-      - name: Install dependencies
+      ## INSTALL DEPENDENCIES ON WORKER
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 xmltodict
+          pip install flake8
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       ## PERFORM LINT WITH FLAKE8
@@ -47,9 +47,9 @@ jobs:
           flake8 ./src --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
   ## DEFINE UNIT TESTING JOB
-  unit-testing:
+  testing:
     ## DEFINE JOB NAME
-    name: "Unit Testing"
+    name: "TESTING"
 
     ## WAIT FOR PREVIOUS JOB
     needs: linting
@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.8, 3.9]
     
     ## DEFINE STEPS
     steps:
@@ -71,25 +71,25 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      ## CONFIGURE WORKER TO PERFORM TESTS
-      - name: Install dependencies
+      ## INSTALL DEPENDENCIES ON WORKER
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest xmltodict
+          pip install pytest pytest-cov
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       ## PERFORM UNIT TEST WITH PYTEST
       - name: Test with pytest
         run: |
-          pytest
+          pytest -v --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
 
   ## DEFINE CODE COVERAGE JOB
   code-cov:
     ## DEFINE NAME:
-    name: "Code Coverage"
+    name: "CODE COVERAGE"
 
     ## WAIT FOR PREVIOUS JOB
-    needs: unit-testing
+    needs: testing
 
     ## DEFINE WORKER
     runs-on: ubuntu-latest
@@ -123,7 +123,7 @@ jobs:
         uses: alexanderdamiani/pytester-cov@v1.2.0
         with:
           #pytest-root-dir: './src/'
-          cov-omit-list: 'test/*, dev/*, docs/*'
+          cov-omit-list: 'test/*, dev/*, docs/*, src/version.py'
           cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
           cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
       
@@ -141,10 +141,10 @@ jobs:
       #    SLACK_MESSAGE: ${{ steps.pytest.outputs.output-table }}
       #    SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
   
-  ## DEFINE SAST (SEMGREP) JOB
-  sast-semgrep:
+  ## DEFINE SECURITY JOB
+  security:
     ## DEFINE NAME
-    name: "SAST (SEMGREP)"
+    name: "SECURITY"
 
     ## WAIT FOR PREVIOUS JOB
     needs: code-cov
@@ -160,58 +160,29 @@ jobs:
       ## CLONE REPO CODE
       - uses: actions/checkout@v2
 
-      ## PERFORM SEMGREP SCAN
-      - name: "Performing Semgrep Scan"
-        uses: returntocorp/semgrep-action@v1
+      ## CACHE VULNERABILITY DATABASE
+      - name: Cache multiple paths
+        uses: actions/cache@v2
         with:
-          config: >- # more at semgrep.dev/explore
-            p/security-audit
-            p/secrets
-          auditOn: push
-          generateSarif: "1"
+          path: |
+            ${{ github.workspace }}/db
+          key: ${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+
+      ## PERFORM SECURITY SCANS
+      - name: Perform Scan
+        uses: ShiftLeftSecurity/scan-action@master
+        env:
+          VDB_HOME: ${{ github.workspace }}/db
+          WORKSPACE: ""
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          output: reports
 
       ## UPLOAD RESULTS TO GITHUB SECURITY TAB
       - name: Upload SARIF file for GitHub Advanced Security Dashboard
         uses: github/codeql-action/upload-sarif@v1
         with:
-          sarif_file: semgrep.sarif
-        if: always()
-
-  ## DEFINE SAST (BANDIT) JOB
-  sast-bandit:
-    ## DEFINE NAME
-    name: "SAST (BANDIT)"
-
-    ## WAIT FOR PREVIOUS JOB
-    needs: code-cov
-    
-    ## DEFINE WORKER
-    runs-on: ubuntu-latest
-    
-    ## DEFINE STEPS
-    steps:
-      ## CLONE REPO CODE
-      - uses: actions/checkout@v2
-
-      ## INSTALL DEPENDENCIES
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install bandit bandit-sarif-formatter
-
-      ## RUN BANDIT SCAN
-      - name: "Performing Bandit Scan"
-        run: |
-          bandit -r ./src/ --verbose -ll --skip B104 --format sarif --output results.sarif
-
-      ## UPLOAD SECURITY REPORT
-      - name: "Upload Security Report"
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: results.sarif
-
-  ## DEFINE BUILD JOB
-  #build-publish:
+          sarif_file: reports
     ## DEFINE NAME
     #name: "Build & Publish"
 
