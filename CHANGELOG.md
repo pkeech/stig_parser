@@ -62,6 +62,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Applied Standards to Variable Names.
-* Renamed JSON output Variables.
-* 
+* Standardized Variable Names.
+* Standardized JSON output Variables.
