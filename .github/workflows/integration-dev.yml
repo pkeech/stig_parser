@@ -86,7 +86,7 @@ jobs:
   ## DEFINE CODE COVERAGE JOB
   code-cov:
     ## DEFINE NAME:
-    name: "Code Coverage"
+    name: "CODE COVERAGE"
 
     ## WAIT FOR PREVIOUS JOB
     needs: testing
