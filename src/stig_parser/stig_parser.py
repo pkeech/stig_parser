@@ -40,7 +40,6 @@ def find_between( s, first, last ):
     except ValueError:
         return ""
 
-
 ## FUNCTION: PRETTY PRINT ELEMENTTREE OUTPUT
 ## THIS IS NOT NEEDED AS OF NOW
 ## TO USE, CALL FUNCTION
@@ -61,6 +60,27 @@ def PrettyPrint(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = j
     return elem 
+
+## FUNCTION: HANDLE STIG RULES WITH MULTIPLE CCI ENTRIES
+## PROVIDED BY: gregelin
+
+def get_cci_list(IDENT):
+    ## HANDLE MULTIPLE IDENT ENTRIES (CCI)
+    if len(IDENT) == 2:
+        IDENT = IDENT['#text']
+    else:
+        ## DEFINE EMPTY RESULTS
+        RESULTS = ""
+
+        ## LOOP THROUGH ALL CCI NUMBERS
+        for RESULT in IDENT:
+            RESULTS += RESULT['#text'] + ","
+
+        ## REMOVE LAST ','
+        IDENT = RESULTS.rstrip(RESULTS[-1])
+    
+    ## RETURN RESULTS
+    return IDENT
 
 ##  ----------------------------
 ##  ----- PUBLIC FUNCTIONS -----
@@ -103,22 +123,6 @@ def convert_xccdf(RAW):
 
     ## GENERATE EMPTY ARRAY
     STIGS = []
-
-    def get_cci_list(IDENT):
-        ## HANDLE MULTIPLE IDENT ENTRIES (CCI)
-        if len(IDENT) == 2:
-            IDENT = IDENT['#text']
-        else:
-            ## DEFINE EMPTY RESULTS
-            RESULTS = ""
-
-            ## LOOP THROUGH ALL CCI NUMBERS
-            for RESULT in IDENT:
-                RESULTS += RESULT['#text'] + ","
-
-            ## REMOVE LAST ','
-            IDENT = RESULTS.rstrip(RESULTS[-1])
-        return IDENT
 
     ## LOOP THROUGH STIGS
     for STIG in CONTENT_DICT['Benchmark']['Group']:

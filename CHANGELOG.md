@@ -64,3 +64,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Standardized Variable Names.
 * Standardized JSON output Variables.
+
+## [1.1.1] - 2022-05-11
+
+### Fixed
+
+* ([#37](https://github.com/pkeech/stig_parser/issues/37)) Resolved Issues Concerning STIG Rules with Multiple CCIs. Credit: @gregelin

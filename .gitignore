@@ -1,6 +1,9 @@
 ## VSCODE
 .vscode/
 
+## IGNORE STIGS USED FOR TESTING
+*.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
