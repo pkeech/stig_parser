@@ -44,6 +44,7 @@ The table below briefly describes each update. For more information, view the re
 | 1.0.1 | Updated to handle change to STIG schema ([Issue #3](https://github.com/pkeech/stig_parser/issues/3)) |
 | 1.0.2 | Added Additional Fields to Output JSON. View Release Notes for Full Details ([Issue #9](https://github.com/pkeech/stig_parser/issues/9))|
 | 1.1.0 | Added Additional Fields to Output JSON, Included BETA release of CKL creation and added the ability to parse a STIG directly from the ZIP file. View Release Notes for Full Details |
+| 1.1.1 | Resolved Issues Concerning STIG Rules with Multiple CCIs. Credit: @gregelin |
 
 ### Documentation
 Documentation hasn't been created at this time. For the current development documentation, please visit the [repository](https://github.com/pkeech/stig_parser).
