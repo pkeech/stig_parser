@@ -162,7 +162,7 @@ jobs:
 
       ## CACHE VULNERABILITY DATABASE
       - name: Cache multiple paths
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ${{ github.workspace }}/db
