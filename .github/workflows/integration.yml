@@ -120,7 +120,7 @@ jobs:
       ## PERFORM CODE COVERAGE TEST
       - name: "PyTest & CodeCov"
         id: pytest
-        uses: alexanderdamiani/pytester-cov@v1.2.0
+        uses: programmingwithalex/pytester-cov@v1.2.4
         with:
           #pytest-root-dir: './src/'
           cov-omit-list: 'test/*, dev/*, docs/*, src/version.py'
