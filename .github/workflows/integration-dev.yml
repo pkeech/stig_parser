@@ -27,7 +27,7 @@ jobs:
 
       ## SETUP PYTHON3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4.1.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -67,7 +67,7 @@ jobs:
 
       ## SETUP PYTHON3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4.1.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -106,7 +106,7 @@ jobs:
 
       ## SETUP PYTHON
       - name: Set up Python 3.9
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4.1.0
         with:
           python-version: 3.9
 
