@@ -65,19 +65,21 @@ def PrettyPrint(elem, level=0):
 ## PROVIDED BY: gregelin
 
 def get_cci_list(IDENT):
-    ## HANDLE MULTIPLE IDENT ENTRIES (CCI)
-    if len(IDENT) == 2:
-        IDENT = IDENT['#text']
-    else:
-        ## DEFINE EMPTY RESULTS
-        RESULTS = ""
+    ## IGNORE EMPTY IDENT
+    if IDENT:
+        ## HANDLE MULTIPLE IDENT ENTRIES (CCI)
+        if len(IDENT) == 2:
+            IDENT = IDENT['#text']
+        else:
+            ## DEFINE EMPTY RESULTS
+            RESULTS = ""
 
-        ## LOOP THROUGH ALL CCI NUMBERS
-        for RESULT in IDENT:
-            RESULTS += RESULT['#text'] + ","
+            ## LOOP THROUGH ALL CCI NUMBERS
+            for RESULT in IDENT:
+                RESULTS += RESULT['#text'] + ","
 
-        ## REMOVE LAST ','
-        IDENT = RESULTS.rstrip(RESULTS[-1])
+            ## REMOVE LAST ','
+            IDENT = RESULTS.rstrip(RESULTS[-1])
     
     ## RETURN RESULTS
     return IDENT
@@ -125,10 +127,12 @@ def convert_xccdf(RAW):
     STIGS = []
 
     ## LOOP THROUGH STIGS
-    for STIG in CONTENT_DICT['Benchmark']['Group']:
-
+    for STIG in CONTENT_DICT['Benchmark']['Group']:\
+        
+        IDENT = ""
         ## PARSE IDENT
-        IDENT = STIG['Rule']['ident']
+        if 'ident' in STIG['Rule']:
+            IDENT = STIG['Rule']['ident']
 
         ## HANDLE ARRAY CASE
         IDENT_LIST = ""
